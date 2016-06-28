@@ -25,7 +25,7 @@ gulp.task('phaser', function() {
 gulp.task('client', ['client_asset', 'client_html', 'phaser'], function() {
     var tsProject = ts.createProject("client/tsconfig.json");
 
-    var tsResult = tsProject.src()
+    return tsProject.src()
         .pipe(ts(tsProject))
         .pipe(browserify({
             insertGlobals:false,
@@ -39,7 +39,11 @@ gulp.task('client', ['client_asset', 'client_html', 'phaser'], function() {
 })
 
 gulp.task('server', function() {
+    var tsProject = ts.createProject("server/tsconfig.json");
 
+    return gulp.src(['server/src/**/*.ts', 'typings/index.d.ts'])
+    .pipe(ts(tsProject))
+    .pipe(gulp.dest("dist"));
 })
 
 gulp.task('default', ['client', 'server']);
