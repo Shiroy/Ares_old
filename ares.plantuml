@@ -1,0 +1,43 @@
+@startuml
+
+abstract class Entity {
+    +position
+    +collide
+    +speed
+    +lifePoint
+}
+
+class GameObject
+class HumanPlayer
+class ComputerPlayer
+abstract class Player {
+    +energies
+}
+
+GameObject --|> Entity
+HumanPlayer --|> Player
+ComputerPlayer --|> Player
+Player --|> Entity
+
+class Map
+
+Entity --o Map
+
+class SpellTemplate {
+    +castTime
+    +cooldownTime
+    +energyCost
+    +lifeCost
+}
+
+class Spell
+Spell -- SpellTemplate
+
+class AuraTemplate
+class Aura
+Aura -- AuraTemplate
+
+
+AuraTemplate --|> SpellTemplate
+
+@enduml
