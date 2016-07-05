@@ -14,7 +14,18 @@
   ],
   "files": [
     "../node_modules/phaser/typescript/phaser.d.ts",
-    "src/index.ts"
+    "../typings/index.d.ts",
+    "src/ares.ts",
+    "src/aura_template.ts",
+    "src/aura.ts",
+    "src/computer_player.ts",
+    "src/entity.ts",
+    "src/gameobject.ts",
+    "src/human_player.ts",
+    "src/index.ts",
+    "src/map.ts",
+    "src/player.ts",
+    "src/spellspell_template.ts"
   ],
   "compileOnSave": false,
   "buildOnSave": false
