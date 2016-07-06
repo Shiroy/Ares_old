@@ -3,6 +3,7 @@ var ts = require('gulp-typescript');
 var browserify = require('gulp-browserify');
 var rename = require('gulp-rename');
 var pug = require("gulp-pug");
+var webpack = require("gulp-webpack");
 
 gulp.task('client_asset', function() {
     return gulp.src('client/assets/**/*', {base:'client'})
@@ -23,19 +24,11 @@ gulp.task('phaser', function() {
 })
 
 gulp.task('client', ['client_asset', 'client_html', 'phaser'], function() {
-    var tsProject = ts.createProject("client/tsconfig.json");
+    return gulp.src("client/src/index.ts")
+    .pipe(webpack(require("./client/webpack.config.js")))
+    .pipe(rename('ares.js'))
+    .pipe(gulp.dest("dist/public"));
 
-    return tsProject.src()
-        .pipe(ts(tsProject))
-        .pipe(browserify({
-            insertGlobals:false,
-            debug: !gulp.env.production
-        }))
-        .on('prebundle', function(bundle) {
-            bundle.external('phaser');
-        })
-        .pipe(rename('ares.js'))
-        .pipe(gulp.dest('dist/public'));
 })
 
 gulp.task('server', function() {
