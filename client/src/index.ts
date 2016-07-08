@@ -1,16 +1,6 @@
 //Write the client code here
 import phaser = require('phaser');
+import {Game} from "./ares";
 
-let game = new Phaser.Game(1024, 768, Phaser.AUTO, {preload: preload, create: create, update: update});
-
-function preload() {
-
-}
-
-function create() {
-
-}
-
-function update() {
-
-}
+let ares : Game = new Game();
+let game = new Phaser.Game(1024, 768, Phaser.AUTO, {preload: ares.preLoad.bind(ares), create: ares.preLoad.bind(ares), update: ares.update.bind(ares)});
