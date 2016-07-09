@@ -19,7 +19,7 @@ gulp.task('client_html', function() {
 })
 
 gulp.task('phaser', function() {
-    gulp.src("node_modules/phaser/dist/*.js")
+    gulp.src("node_modules/phaser/build/phaser.js")
     .pipe(gulp.dest("dist/public"));
 })
 

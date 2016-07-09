@@ -22,7 +22,7 @@
   "dependencies": {
     "express": "^4.14.0",
     "morgan": "^1.7.0",
-    "phaser": "^2.5.0"
+    "phaser": "https://github.com/photonstorm/phaser/archive/v2.6.0.tar.gz"
   },
   "devDependencies": {
     "gulp": "^3.9.1",
