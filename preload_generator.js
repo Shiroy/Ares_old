@@ -70,7 +70,7 @@ var loader = function(){
                 code += "    game.load.spritesheet('" + asset.cache_key + "', '" + asset.cache_key + "', " + asset.width + ", " + asset.height + ");";
                 break;
             case "map":
-                code += "    game.load.tilemap('" + asset.cache_key + "', '" + asset.cache_key + "', null, phaser.Tilemap.TILED_JSON);"
+                code += "    game.load.tilemap('" + asset.cache_key + "', '" + asset.cache_key + "', null, Phaser.Tilemap.TILED_JSON);"
                 break;
             default:
             break;

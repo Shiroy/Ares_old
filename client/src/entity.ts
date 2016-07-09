@@ -1,3 +1,5 @@
+import phaser = require('phaser');
+
 export class Point {
     x: number;
     y: number;
@@ -16,6 +18,8 @@ export abstract class Entity {
     private _collide: boolean;
     private _speed: number;
     private _lifepoint: number;
+
+    private _sprite: phaser.Sprite;
 
     constructor(id: number = null, name: string = "", position: Point = new Point(), collide: boolean = true, speed: number = 0, lifepoint: number = 1){
         if(speed < 0 || lifepoint < 0) throw "Entity initialization error: incorrect parameters";
@@ -58,6 +62,9 @@ export abstract class Entity {
 
         this._id = id;
     }
+    set sprite(sprite: phaser.Sprite){
+      this._sprite = sprite;
+    }
 
     get name(){
         return this._name;
@@ -73,5 +80,8 @@ export abstract class Entity {
     }
     get lifepoint(){
         return this._lifepoint;
+    }
+    get sprite(): phaser.Sprite{
+      return this._sprite;
     }
 }

@@ -13,6 +13,10 @@ export class Entity_Manager{
     private static instance : Entity_Manager = new Entity_Manager();
     private _entities: Map<number, Entity>;
 
+    constructor(){
+      this._entities = new Map<number, Entity>();
+    }
+
     /*
     add an new entity with the key 'id' in the manager map
     return the entity inserted in the map

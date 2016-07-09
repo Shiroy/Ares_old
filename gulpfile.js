@@ -6,7 +6,7 @@ var pug = require("gulp-pug");
 var webpack = require("gulp-webpack");
 
 gulp.task('client_asset', function() {
-    return gulp.src('client/assets/**/*', {base:'client'})
+    return gulp.src('client/assets/**/*', {base:'client/assets'})
     .pipe(gulp.dest('dist/public'));
 })
 

@@ -7,6 +7,9 @@ module.exports = {
     // Add `.ts` and `.tsx` as a resolvable extension.
     extensions: ['', '.webpack.js', '.web.js', '.ts', '.tsx', '.js']
   },
+  externals: {
+      'phaser': 'Phaser'
+  },
   module: {
     loaders: [
       // all files with a `.ts` or `.tsx` extension will be handled by `ts-loader`
