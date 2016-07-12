@@ -2,7 +2,7 @@ var _ = require('lodash');
 var fs = require('fs');
 var path = require('path');
 
-var spritesheet_regex = /char_(\d+)_(\d+)_.+\.png/;
+var spritesheet_regex = /char_(\d+)_(\d+)_.+/;
 
 function readDir(dirPath) {
     var result = [];
@@ -24,8 +24,8 @@ function readDir(dirPath) {
 
             if(['.png', '.jpg'].indexOf(fileInfo.ext) !== -1) {
                 if((m = spritesheet_regex.exec(fileInfo.name)) !== null){
-                    if (m.index === re.lastIndex) {
-                        re.lastIndex++;
+                    if (m.index === spritesheet_regex.lastIndex) {
+                        spritesheet_regex.lastIndex++;
                     }
 
                     file_entry.type = "charset";
@@ -47,6 +47,10 @@ function readDir(dirPath) {
                 file_entry.type = "audio";
                 result.push(file_entry);
             }
+
+            if(file_entry.type) {
+                console.log("Packaging '" + fileInfo.name + "' as " + file_entry.type);
+            }
         }
     }
 
@@ -67,7 +71,7 @@ var loader = function(){
                 code += "    game.load.audio('" + asset.cache_key + "', '" + asset.cache_key + "');\n"
                 break;
             case "charset":
-                code += "    game.load.spritesheet('" + asset.cache_key + "', '" + asset.cache_key + "', " + asset.width + ", " + asset.height + ");";
+                code += "    game.load.spritesheet('" + asset.cache_key + "', '" + asset.cache_key + "', " + asset.w + ", " + asset.h + ");\n";
                 break;
             case "map":
                 code += "    game.load.tilemap('" + asset.cache_key + "', '" + asset.cache_key + "', null, Phaser.Tilemap.TILED_JSON);"
