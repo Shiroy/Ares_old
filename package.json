@@ -7,7 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 0",
     "build": "rm -rf dist && gulp",
     "prepublish": "typings install && npm run build",
-    "start": "node dist/server.js"
+    "start": "node dist/server.js",
+    "watch": "rm -rf dist && gulp watch"
   },
   "repository": {
     "type": "git",
@@ -29,6 +30,8 @@
   "devDependencies": {
     "gulp": "^3.9.1",
     "gulp-browserify": "^0.5.1",
+    "gulp-livereload": "^3.8.1",
+    "gulp-plumber": "^1.1.0",
     "gulp-pug": "^3.0.3",
     "gulp-rename": "^1.2.2",
     "gulp-typescript": "^2.13.6",
