@@ -20,7 +20,7 @@ gulp.task('client_html', function() {
     .pipe(gulp.dest('dist/public'))
 })
 
-gulp.task("socket-io-client", function(){
+gulp.task('socket-io-client', function(){
     return gulp.src("node_modules/socket.io-client/socket.io.js")
     .pipe(gulp.dest("dist/public"));
 })
@@ -30,7 +30,7 @@ gulp.task('phaser', function() {
     .pipe(gulp.dest("dist/public"));
 })
 
-gulp.task('client', ['client_asset', 'client_html', 'phaser', 'socket-io-client', 'client_typescript'], function() { });
+gulp.task('client', ['client_asset', 'client_html', 'phaser', 'socket-io-client', 'client_typescript'])
 
 gulp.task('client_typescript', function() {
 
@@ -40,8 +40,6 @@ gulp.task('client_typescript', function() {
     .pipe(gulp.dest("dist/public"))
     .pipe(livereload());
 })
-
-gulp.task('client', ['client_asset', 'client_html', 'phaser', 'client_typescript'], function() {});
 
 gulp.task('server', function() {
     var tsProject = ts.createProject("server/tsconfig.json");
