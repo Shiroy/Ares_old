@@ -8,7 +8,8 @@ module.exports = {
     extensions: ['', '.webpack.js', '.web.js', '.ts', '.tsx', '.js']
   },
   externals: {
-      'phaser': 'Phaser'
+      'phaser': 'Phaser',
+      'socket.io': 'io'
   },
   module: {
     loaders: [

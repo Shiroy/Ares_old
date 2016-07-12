@@ -1,15 +1,25 @@
 import express = require('express');
 import serve_static = require('serve-static');
+import http = require('http');
 import morgan = require('morgan');
+import socket_io = require("socket.io");
 
 let app = express();
+let server = http.createServer(app);
+let io = socket_io();
+
+io.attach(server);
 
 app.use(morgan('dev'));
+
+io.on('connection', () => {
+    console.log("Nouvelle connexion");
+})
 
 app.use(serve_static(__dirname + '/public', {
     index: ['index.html']
 }));
 
-app.listen(8080, function() {
+server.listen(8080, function() {
     console.log("Server running on http://localhost:8080");
 });
