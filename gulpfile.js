@@ -18,12 +18,17 @@ gulp.task('client_html', function() {
     .pipe(gulp.dest('dist/public'))
 })
 
+gulp.task("socket-io-client", function(){
+    return gulp.src("node_modules/socket.io-client/socket.io.js")
+    .pipe(gulp.dest("dist/public"));
+})
+
 gulp.task('phaser', function() {
     gulp.src("node_modules/phaser/build/phaser.js")
     .pipe(gulp.dest("dist/public"));
 })
 
-gulp.task('client', ['client_asset', 'client_html', 'phaser'], function() {
+gulp.task('client', ['client_asset', 'client_html', 'phaser', 'socket-io-client'], function() {
     return gulp.src("client/src/index.ts")
     .pipe(webpack(require("./client/webpack.config.js")))
     .pipe(rename('ares.js'))
