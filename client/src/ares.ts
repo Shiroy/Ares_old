@@ -120,15 +120,8 @@ export class Game
 
   render(){
     // debugging
-    this._game.debug.body(this._player);
     this._game.debug.bodyInfo(this._player, 32, 320);
-
-    this._groups.get("foes").forEach(
-      (element: Phaser.Sprite) => {
-        this._game.debug.body(element);
-      },
-      this
-    );
+    this._game.debug.spriteBounds(this._player, "blue", false);
   }
 
   // next 2 methods could be generic but typescript doesn't accept '.destroy' on generic type...

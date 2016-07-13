@@ -30,7 +30,9 @@ export class Entity extends Phaser.Sprite{
   debug_scope(): Phaser.Graphics{
     var graphics = this.game.add.graphics(0, 0);
     graphics.beginFill(0xFF0000, 0.1);
-    graphics.drawCircle(this.x, this.y, this.scope + Math.max(this.width, this.height)*2 + 100);
+    graphics.drawCircle(this.x, this.y, 2*this.scope);
+    graphics.beginFill(0x0000FF, 0.4);
+    graphics.drawCircle(this.x, this.y, 10);
     return graphics;
   }
 }
