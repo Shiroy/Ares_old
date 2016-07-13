@@ -169,19 +169,24 @@ export class Game
   private _read_input(){
     if (this._cursors.left.isDown)
     {
-      this._player.body.velocity.x = -300;
+      this._player.body.velocity.x = -this._player.speed;
     }
     if (this._cursors.right.isDown)
     {
-      this._player.body.velocity.x = 300;
+      this._player.body.velocity.x = this._player.speed;
     }
     if (this._cursors.up.isDown)
     {
-      this._player.body.velocity.y = -300;
+      this._player.body.velocity.y = -this._player.speed;
     }
     if (this._cursors.down.isDown)
     {
-      this._player.body.velocity.y = 300;
+      this._player.body.velocity.y = this._player.speed;
+    }
+
+    if(Math.abs(this._player.body.velocity.x) + Math.abs(this._player.body.velocity.y)>this._player.speed){
+      this._player.body.velocity.x = this._player.body.velocity.x / Math.sqrt(2);
+      this._player.body.velocity.y = this._player.body.velocity.y / Math.sqrt(2)
     }
   }
 }
