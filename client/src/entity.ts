@@ -1,87 +1,25 @@
-import phaser = require('phaser');
+import Phaser = require('phaser');
 
-export class Point {
-    x: number;
-    y: number;
+export class Entity extends Phaser.Sprite{
+  private _scope: number;
+  constructor(game: Phaser.Game, x: number, y: number, key: string | Phaser.RenderTexture | Phaser.BitmapData | PIXI.Texture, frame: string | number, scope: number = 230, health: number = 100){
+    // call to the Phaser.Sprite constructor
+    super(game, x, y, key, frame);
 
-    move(dx: number, dy: number) {
-        this.x += dx;
-        this.y += dy;
-    }
-}
+    this._scope = scope;
+    this.heal(health);
+  }
+  get scope(){
+    return this._scope;
+  }
+  set scope(scope: number){
+    this._scope = scope;
+  }
 
-export abstract class Entity {
-    private _id: number;//unique identifier of an Entity
-    private _name: string;
-
-    private _position: Point;
-    private _collide: boolean;
-    private _speed: number;
-    private _lifepoint: number;
-
-    private _sprite: phaser.Sprite;
-
-    constructor(id: number = null, name: string = "", position: Point = new Point(), collide: boolean = true, speed: number = 0, lifepoint: number = 1){
-        if(speed < 0 || lifepoint < 0) throw "Entity initialization error: incorrect parameters";
-
-        this._id = id;
-        this._name = name;
-
-        this._position = position;
-        this._collide = collide;
-        this._speed = speed;
-        this._lifepoint = lifepoint;
-    }
-
-    set name(name_: string){
-        this._name = name;
-    }
-    set position(position: Point){
-        this._position = position;
-    }
-    set collide(collide: boolean){
-        this._collide = collide;
-    }
-    set speed(speed: number){
-        if(speed < 0) throw "Entity error: negative speed";
-        this._speed = speed;
-    }
-    set lifepoint(lifepoint: number) {
-        if(lifepoint < 0) throw "Entity error: negative lifepoint";
-        this._lifepoint = lifepoint;
-    }
-
-    get id(){
-        return this._id;
-    }
-
-    set id(id: number) {
-        if(this._id){
-            throw "Entity error : id already set";
-        }
-
-        this._id = id;
-    }
-    set sprite(sprite: phaser.Sprite){
-      this._sprite = sprite;
-    }
-
-    get name(){
-        return this._name;
-    }
-    get position(){
-        return this._position;
-    }
-    get collide(){
-        return this._collide;
-    }
-    get speed(){
-        return this._speed;
-    }
-    get lifepoint(){
-        return this._lifepoint;
-    }
-    get sprite(): phaser.Sprite{
-      return this._sprite;
-    }
+  debug_scope(): Phaser.Graphics{
+    var graphics = this.game.add.graphics(0, 0);
+    graphics.beginFill(0xFF0000, 0.1);
+    graphics.drawCircle(this.x, this.y, this.scope + Math.max(this.width, this.height)*2 + 100);
+    return graphics;
+  }
 }
