@@ -2,15 +2,17 @@ import Phaser = require('phaser');
 
 export class Entity extends Phaser.Sprite{
   private _scope: number;
-  private _speed: number;
+  private _maxSpeed: number;
 
-  constructor(game: Phaser.Game, x: number, y: number, key: string | Phaser.RenderTexture | Phaser.BitmapData | PIXI.Texture, frame: string | number, scope: number = 230, health: number = 100, speed: number = 300){
+  constructor(game: Phaser.Game, x: number, y: number, key: string | Phaser.RenderTexture | Phaser.BitmapData | PIXI.Texture, frame: string | number, scope: number = 230, maxHealth: number = 100, maxSpeed: number = 300){
     // call to the Phaser.Sprite constructor
     super(game, x, y, key, frame);
 
+    this.maxHealth = maxHealth;
+    this.heal(maxHealth);
+
     this._scope = scope;
-    this._speed = speed;
-    this.heal(health);
+    this._maxSpeed = maxSpeed;
   }
   get scope(){
     return this._scope;
@@ -18,11 +20,11 @@ export class Entity extends Phaser.Sprite{
   set scope(scope: number){
     this._scope = scope;
   }
-  get speed(){
-    return this._speed;
+  get maxSpeed(){
+    return this._maxSpeed;
   }
-  set speed(speed: number){
-    this._speed = speed;
+  set maxSpeed(maxSpeed: number){
+    this._maxSpeed = maxSpeed;
   }
 
   debug_scope(): Phaser.Graphics{

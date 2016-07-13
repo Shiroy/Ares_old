@@ -7,7 +7,14 @@ function set_sprite_character_animations(sprite: Phaser.Sprite){
   sprite.animations.add('down', [130,131,132,133,134,135,136,137,138], 20, true);
   sprite.animations.add('down', [130,131,132,133,134,135,136,137,138], 20, true);
 
-  sprite.animations.add('death', [260, 261, 262, 263, 264, 264], 15, true);
+  sprite.animations.add('death', [260, 261, 262, 263, 264, 265], 5, false);
+  
+  sprite.events.onKilled.add(
+    (this_sprite: Phaser.Sprite) => {
+      this_sprite.exists = true;
+      this_sprite.play('death');
+    }
+  );
 }
 
 export function set_sprite_character_group(char_group: Phaser.Group){

@@ -111,9 +111,7 @@ export class Game
           else if (element.body.velocity.x > 0) element.play('right');
           else if (element.body.velocity.y < 0) element.play('up');
           else if (element.body.velocity.y > 0) element.play('down');
-          else{
-            if (element.alive) element.animations.stop();
-          }
+          else if (element.alive) element.animations.stop();
         },
         this
       );
@@ -151,7 +149,7 @@ export class Game
     for(let group of this._groups.values()) {
       group.forEach(
         (element: Phaser.Sprite) => {
-          let text = this._game.add.text(0, 0, element.health.toString(), { font: "", fill: "#f99b10", align: "" });
+          let text = this._game.add.text(0, 0, element.health.toString(), { font: "3em;", fill: "#f99b10", align: "" });
           text.alignTo(element, Phaser.TOP_CENTER, 0, -15);
           this._texts.push(text);
         },
@@ -169,22 +167,22 @@ export class Game
   private _read_input(){
     if (this._cursors.left.isDown)
     {
-      this._player.body.velocity.x = -this._player.speed;
+      this._player.body.velocity.x = -this._player.maxSpeed;
     }
     if (this._cursors.right.isDown)
     {
-      this._player.body.velocity.x = this._player.speed;
+      this._player.body.velocity.x = this._player.maxSpeed;
     }
     if (this._cursors.up.isDown)
     {
-      this._player.body.velocity.y = -this._player.speed;
+      this._player.body.velocity.y = -this._player.maxSpeed;
     }
     if (this._cursors.down.isDown)
     {
-      this._player.body.velocity.y = this._player.speed;
+      this._player.body.velocity.y = this._player.maxSpeed;
     }
 
-    if(Math.abs(this._player.body.velocity.x) + Math.abs(this._player.body.velocity.y)>this._player.speed){
+    if(Math.abs(this._player.body.velocity.x) + Math.abs(this._player.body.velocity.y)>this._player.maxSpeed){
       this._player.body.velocity.x = this._player.body.velocity.x / Math.sqrt(2);
       this._player.body.velocity.y = this._player.body.velocity.y / Math.sqrt(2)
     }
