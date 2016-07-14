@@ -1,6 +1,8 @@
 var _ = require('lodash');
 var fs = require('fs');
 var path = require('path');
+var jsesc = require('jsesc');
+var upath = require('upath');
 
 var spritesheet_regex = /char_(\d+)_(\d+)_.+/;
 
@@ -64,17 +66,17 @@ var loader = function(){
     for (var asset of assetList) {
         switch (asset.type) {
             case "image":
-                code += "    game.load.image('" + asset.cache_key + "', '" + asset.cache_key + "');\n"
+                code += "    game.load.image('" + jsesc(upath.normalizeSafe(asset.cache_key)) + "', '" + jsesc(upath.normalizeSafe(asset.cache_key)) + "');\n"
                 break;
 
             case "audio":
-                code += "    game.load.audio('" + asset.cache_key + "', '" + asset.cache_key + "');\n"
+                code += "    game.load.audio('" + jsesc(upath.normalizeSafe(asset.cache_key)) + "', '" + jsesc(upath.normalizeSafe(asset.cache_key)) + "');\n"
                 break;
             case "charset":
-                code += "    game.load.spritesheet('" + asset.cache_key + "', '" + asset.cache_key + "', " + asset.w + ", " + asset.h + ");\n";
+                code += "    game.load.spritesheet('" + jsesc(upath.normalizeSafe(asset.cache_key)) + "', '" + jsesc(upath.normalizeSafe(asset.cache_key)) + "', " + asset.w + ", " + asset.h + ");\n";
                 break;
             case "map":
-                code += "    game.load.tilemap('" + asset.cache_key + "', '" + asset.cache_key + "', null, Phaser.Tilemap.TILED_JSON);"
+                code += "    game.load.tilemap('" + jsesc(upath.normalizeSafe(asset.cache_key)) + "', '" + jsesc(upath.normalizeSafe(asset.cache_key)) + "', null, Phaser.Tilemap.TILED_JSON);\n"
                 break;
             default:
             break;
