@@ -1,27 +1,55 @@
-import {Entity, Point} from './entity';
-import {Energy} from './energy';
+import {Entity} from './entity';
 
-export class Player extends Entity {
-    private _energies: number[];
+export class Player extends Entity{
+  private _scope: number;
+  private _maxSpeed: number;
 
-    constructor(name: string = "Unknown", speed = 1.0, lifepoint: number) {
-        super(null, name, new Point(), false, speed, lifepoint);
-    }
+  private _target: Phaser.Sprite;
+  private _following_target: boolean;
 
-    setEnergy(type: Energy, value: number) {
-        if(value < 0){
-            value = 0;
-        }
-        this._energies[type] = value;
-    }
+  constructor(game: Phaser.Game, x: number, y: number, key: string | Phaser.RenderTexture | Phaser.BitmapData | PIXI.Texture, frame: string | number, scope: number = 230, maxHealth: number = 100, maxSpeed: number = 300){
+    // call to the Phaser.Sprite constructor
+    super(game, x, y, key, frame, maxHealth);
 
-    getEnergy(type: Energy) : number {
-        return this._energies[type];
-    }
+    this._scope = scope;
+    this._maxSpeed = maxSpeed;
 
-    modifyEnergy(type: Energy, delta: number) {
-        let value = this.getEnergy(type);
-        value += delta;
-        this.setEnergy(type, value);
-    }
+    this._target = this;
+    this._following_target = false;
+  }
+
+  get scope(){
+    return this._scope;
+  }
+  set scope(scope: number){
+    this._scope = scope;
+  }
+  get maxSpeed(){
+    return this._maxSpeed;
+  }
+  set maxSpeed(maxSpeed: number){
+    this._maxSpeed = maxSpeed;
+  }
+  get target(){
+    return this._target;
+  }
+  set target(sprite: Phaser.Sprite){
+    this._target = sprite;
+  }
+  get following_target(){
+    return this._following_target;
+  }
+  set following_target(following_target: boolean){
+    this._following_target = following_target;
+  }
+
+  debug_scope(): Phaser.Graphics{
+    var graphics = this.game.add.graphics(0, 0);
+    graphics.beginFill(0xFF0000, 0.1);
+    graphics.drawCircle(this.x, this.y, 2*this.scope);
+    graphics.beginFill(0x0000FF, 0.4);
+    graphics.drawCircle(this.x, this.y, 10);
+    return graphics;
+  }
+
 }

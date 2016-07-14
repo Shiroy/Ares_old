@@ -9,7 +9,7 @@ export class MapClass{
     private _height: number;
     private _width: number;
 
-    constructor(h: number, w: number){
+    constructor(h: number = 1, w: number = 1){
         if(h <= 0 || w <= 0) throw "map initialization error: incorrect size";
         this._height = h;
         this._width = w;
