@@ -3,6 +3,7 @@ import Phaser = require('phaser');
 import {AresMap} from "./phaser_map";
 import {Entity} from './entity';
 import {Player} from './player';
+import {life_printer} from './printer';
 
 import {set_sprite_character_group} from './sprite_functions';
 
@@ -20,8 +21,7 @@ export class Game
 
   private _cursors: Phaser.CursorKeys;
 
-  private _texts: Array<Phaser.Text>;
-  private _graphics: Array<Phaser.Graphics>;
+  private _life_printer: life_printer;
 
   constructor() {
     this._game = new Phaser.Game(800, 600, Phaser.AUTO, 'Ares', {
@@ -34,9 +34,6 @@ export class Game
     this._map = new AresMap(this._game);
 
     this._groups = new Map<string, Phaser.Group>();
-
-    this._texts = new Array<Phaser.Text>();
-    this._graphics = new Array<Phaser.Graphics>();
   }
 
   preload() {
@@ -71,7 +68,9 @@ export class Game
         element.events.onInputDown.add(
           (sprite: Phaser.Sprite) => {
             this._fight(this._player, sprite);
-            if(this._player.target == sprite) this._player.following_target = true;
+            if(this._player.target == sprite){
+              if(this._game.physics.arcade.distanceBetween(this._player, this._player.target) > this._player.scope/2) this._player.following_target = true;
+            }
             else{
               this._player.following_target = false;
               this._player.target = sprite;
@@ -83,8 +82,18 @@ export class Game
       this
     );
 
-
     this._cursors = this._game.input.keyboard.createCursorKeys();
+
+    this._life_printer = new life_printer(this._game, 15);
+    for(let group of this._groups.values()) {
+      group.forEach(
+        (element: Phaser.Sprite) => {
+          this._life_printer.add_sprite(element);
+        },
+        this
+      )
+    };
+    this._life_printer.start();
   }
 
   update() {
@@ -100,13 +109,6 @@ export class Game
       group.setAll('body.velocity.x', 0);
       group.setAll('body.velocity.y', 0);
     }
-
-    this._clear_texts();
-    this._display_lifes();
-
-    // debug player scope
-    this._clear_graphics();
-    this._graphics.push(this._player.debug_scope());
 
     this._read_input();
 
@@ -128,40 +130,11 @@ export class Game
     // debugging
     this._game.debug.bodyInfo(this._player, 32, 320);
 
-    let color: string;
-    if(this._game.physics.arcade.distanceBetween(this._player, this._player.target) < this._player.scope) color = 'green';
-    else color = 'red';
-    this._game.debug.spriteBounds(this._player.target, color, false);
+    this._player.debug_scope();
+
+    this._player.debug_target();
   }
 
-  // next 2 methods could be generic but typescript doesn't accept '.destroy' on generic type...
-  private _clear_texts(){
-    for (let text of this._texts) {
-      text.destroy();
-    }
-    this._texts = [];
-  }
-  private _clear_graphics(){
-    for (let graphic of this._graphics) {
-      graphic.destroy();
-    }
-    this._graphics = [];
-  }
-
-  private _display_lifes(){
-    for(let group of this._groups.values()) {
-      group.forEach(
-        (element: Phaser.Sprite) => {
-          if(element.alive){
-            let text = this._game.add.text(0, 0, element.health.toString(), { font: "3em;", fill: "#f99b10", align: "" });
-            text.alignTo(element, Phaser.TOP_CENTER, 0, -15);
-            this._texts.push(text);
-          }
-        },
-        this
-      );
-    }
-  }
 
   private _fight(giver: Player, receiver: Phaser.Sprite){
     if(this._game.physics.arcade.distanceBetween(giver, receiver) < giver.scope){
