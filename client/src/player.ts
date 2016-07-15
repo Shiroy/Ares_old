@@ -7,6 +7,8 @@ export class Player extends Entity{
   private _target: Phaser.Sprite;
   private _following_target: boolean;
 
+  private _graphic_scope: Phaser.Graphics;
+
   constructor(game: Phaser.Game, x: number, y: number, key: string | Phaser.RenderTexture | Phaser.BitmapData | PIXI.Texture, frame: string | number, scope: number = 230, maxHealth: number = 100, maxSpeed: number = 300){
     // call to the Phaser.Sprite constructor
     super(game, x, y, key, frame, maxHealth);
@@ -16,6 +18,8 @@ export class Player extends Entity{
 
     this._target = this;
     this._following_target = false;
+
+    this._graphic_scope = this.game.add.graphics(0, 0);
   }
 
   get scope(){
@@ -44,12 +48,17 @@ export class Player extends Entity{
   }
 
   debug_scope(): Phaser.Graphics{
-    var graphics = this.game.add.graphics(0, 0);
-    graphics.beginFill(0xFF0000, 0.1);
-    graphics.drawCircle(this.x, this.y, 2*this.scope);
-    graphics.beginFill(0x0000FF, 0.4);
-    graphics.drawCircle(this.x, this.y, 10);
-    return graphics;
+    this._graphic_scope.clear();
+    this._graphic_scope.beginFill(0xFF0000, 0.1);
+    this._graphic_scope.drawCircle(this.x, this.y, 2*this.scope);
+    this._graphic_scope.beginFill(0x0000FF, 0.4);
+    this._graphic_scope.drawCircle(this.x, this.y, 10);
+    return this._graphic_scope;
   }
-
+  debug_target(){
+    let color: string;
+    if(this.game.physics.arcade.distanceBetween(this, this._target) < this._scope) color = 'green';
+    else color = 'red';
+    this.game.debug.spriteBounds(this._target, color, false);
+  }
 }
