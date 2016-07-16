@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 0",
     "build": "gulp",
-    "prepublish": "typings install && npm run build && gulp runtime_dep",
+    "prepublish": "gulp full_build",
     "start": "node dist/server.js",
     "watch": "rm -rf dist && gulp watch"
   },
@@ -24,6 +24,7 @@
     "gulp": "^3.9.1",
     "gulp-rimraf": "^0.2.0",
     "gulp-shell": "^0.5.2",
-    "rimraf": "^2.5.3"
+    "rimraf": "^2.5.3",
+    "run-sequence": "^1.2.2"
   }
 }
