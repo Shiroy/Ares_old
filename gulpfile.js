@@ -44,3 +44,13 @@ gulp.task('default', ['client', 'server']);
 gulp.task('full_build', function(cb){
     runSequence('build_dep', 'runtime_dep', cb);
 })
+
+gulp.task('watch', ['client_watch', 'server_watch']);
+
+gulp.task('client_watch', shell.task(['gulp watch'], {
+    cwd: './client'
+}));
+
+gulp.task('server_watch', shell.task(['gulp watch'], {
+    cwd: './server'
+}));

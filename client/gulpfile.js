@@ -42,7 +42,6 @@ gulp.task('client_typescript', function() {
 gulp.task("watch", ['client'], function() {
     livereload.listen()
     gulp.watch("client/src/**/*.ts", ['client_typescript']);
-    gulp.watch("server/src/**/*.ts", ['server']);
 });
 
 gulp.task('default', ['client']);
