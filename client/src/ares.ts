@@ -142,4 +142,7 @@ export class Game
       receiver.damage(15);
     }
   }
+  attack(){
+    this._fight(this._player, this._player.target);
+  }
 }

@@ -26,7 +26,8 @@
     "src/player.ts",
     "src/printer.ts",
     "src/spellspell_template.ts",
-    "src/sprite_functions.ts"
+    "src/sprite_functions.ts",
+    "src/ui.ts"
   ],
   "compileOnSave": false,
   "buildOnSave": false
