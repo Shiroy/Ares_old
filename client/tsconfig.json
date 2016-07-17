@@ -22,6 +22,7 @@
     "src/index.ts",
     "src/map.ts",
     "src/phaser_map.ts",
+    "src/player_commands.ts",
     "src/player.ts",
     "src/printer.ts",
     "src/spellspell_template.ts",

@@ -4,6 +4,7 @@ import {AresMap} from "./phaser_map";
 import {Entity} from './entity';
 import {Player} from './player';
 import {life_printer} from './printer';
+import {player_commands} from './player_commands';
 
 import {set_sprite_character_group} from './sprite_functions';
 
@@ -16,10 +17,9 @@ export class Game
 
   private _map: AresMap;
   private _player: Player;
+  private _player_commands: player_commands;
 
   private _groups: Map<string, Phaser.Group>;
-
-  private _cursors: Phaser.CursorKeys;
 
   private _life_printer: life_printer;
 
@@ -55,6 +55,7 @@ export class Game
     this._groups.get("players").add(this._player);
     set_sprite_character_group(this._groups.get("players"));
     this._game.camera.follow(this._player);
+    this._player_commands = new player_commands(this._player);
 
     // add some foes
     for (var i = 0; i < 3; i++){
@@ -82,7 +83,7 @@ export class Game
       this
     );
 
-    this._cursors = this._game.input.keyboard.createCursorKeys();
+
 
     this._life_printer = new life_printer(this._game, 15);
     for(let group of this._groups.values()) {
@@ -110,7 +111,7 @@ export class Game
       group.setAll('body.velocity.y', 0);
     }
 
-    this._read_input();
+    this._player_commands.movements();
 
     for(let group of this._groups.values()) {
       group.forEach(
@@ -139,42 +140,6 @@ export class Game
   private _fight(giver: Player, receiver: Phaser.Sprite){
     if(this._game.physics.arcade.distanceBetween(giver, receiver) < giver.scope){
       receiver.damage(15);
-    }
-  }
-
-  private _read_input(){
-    if (this._cursors.left.isDown)
-    {
-      this._player.body.velocity.x = -this._player.maxSpeed;
-    }
-    if (this._cursors.right.isDown)
-    {
-      this._player.body.velocity.x = this._player.maxSpeed;
-    }
-    if (this._cursors.up.isDown)
-    {
-      this._player.body.velocity.y = -this._player.maxSpeed;
-    }
-    if (this._cursors.down.isDown)
-    {
-      this._player.body.velocity.y = this._player.maxSpeed;
-    }
-
-    if(this._cursors.up.isUp && this._cursors.down.isUp && this._cursors.right.isUp && this._cursors.left.isUp){
-      if(this._player.following_target){
-        if(this._game.physics.arcade.distanceBetween(this._player, this._player.target) < this._player.scope/2) this._player.following_target = false;
-
-        if(this._player.position.x > this._player.target.position.x) this._player.body.velocity.x = -this._player.maxSpeed;
-        if(this._player.position.x < this._player.target.position.x) this._player.body.velocity.x = this._player.maxSpeed;
-        if(this._player.position.y > this._player.target.position.y) this._player.body.velocity.y = -this._player.maxSpeed;
-        if(this._player.position.y < this._player.target.position.y) this._player.body.velocity.y = this._player.maxSpeed;
-      }
-    }
-    else this._player.following_target = false;
-
-    if(Math.abs(this._player.body.velocity.x) + Math.abs(this._player.body.velocity.y)>this._player.maxSpeed){
-      this._player.body.velocity.x = this._player.body.velocity.x / Math.sqrt(2);
-      this._player.body.velocity.y = this._player.body.velocity.y / Math.sqrt(2)
     }
   }
 }
