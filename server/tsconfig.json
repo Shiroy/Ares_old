@@ -1,23 +1,17 @@
 {
-  "compilerOptions": {
-    "target": "es6",
-    "outDir": "../dist",
-    "module": "commonjs",
-    "moduleResolution": "node",
-    "sourceMap": false,
-    "removeComments": false,
-    "noImplicitAny": false
-  },
-  "exclude": [
-    "node_modules",
-    "typings/main",
-    "typings/main.d.ts"
-  ],
-  "files": [
-    "typings/index.d.ts",
-    "src/server.ts",
-    "src/util/signal.ts"
-  ],
-  "compileOnSave": false,
-  "buildOnSave": false
+    "compilerOptions": {
+        "target": "es6",
+        "module": "commonjs",
+        "moduleResolution": "node",
+        "sourceMap": false,
+        "removeComments": false,
+        "noImplicitAny": false
+    },
+    "exclude": [
+        "node_modules",
+        "typings/main",
+        "typings/main.d.ts"
+    ],
+    "compileOnSave": false,
+    "buildOnSave": false
 }

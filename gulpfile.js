@@ -12,6 +12,10 @@ gulp.task('server', ['clean'], shell.task(['gulp server'], {
     cwd: './server'
 }));
 
+gulp.task('protocol', ['clean'], shell.task(['gulp protocol'], {
+    cwd: './protocol'
+}));
+
 gulp.task('dep_client', shell.task(['npm i'], {
     cwd: './client'
 }));
@@ -35,11 +39,11 @@ gulp.task('clean', function() {
     .pipe(rimraf());
 })
 
-gulp.task('runtime_dep', shell.task(['npm i'], {
+gulp.task('runtime_dep', shell.task(['npm i', 'npm link ares-protocol'], {
     cwd: './dist'
 }));
 
-gulp.task('default', ['client', 'server']);
+gulp.task('default', ['client', 'server', 'protocol']);
 
 gulp.task('full_build', function(cb){
     runSequence('build_dep', 'runtime_dep', cb);
