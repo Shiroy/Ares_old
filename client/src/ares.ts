@@ -3,6 +3,9 @@ import Phaser = require('phaser');
 import {AresMap} from "./phaser_map";
 import {Entity} from './entity';
 import {Player} from './player';
+import {life_printer} from './printer';
+import {player_commands} from './player_commands';
+import {spell, spell_attack} from './spell';
 
 import {set_sprite_character_group} from './sprite_functions';
 
@@ -15,13 +18,11 @@ export class Game
 
   private _map: AresMap;
   private _player: Player;
+  private _player_commands: player_commands;
 
   private _groups: Map<string, Phaser.Group>;
 
-  private _cursors: Phaser.CursorKeys;
-
-  private _texts: Array<Phaser.Text>;
-  private _graphics: Array<Phaser.Graphics>;
+  private _life_printer: life_printer;
 
   constructor() {
     this._game = new Phaser.Game(800, 600, Phaser.AUTO, 'Ares', {
@@ -34,9 +35,6 @@ export class Game
     this._map = new AresMap(this._game);
 
     this._groups = new Map<string, Phaser.Group>();
-
-    this._texts = new Array<Phaser.Text>();
-    this._graphics = new Array<Phaser.Graphics>();
   }
 
   preload() {
@@ -53,11 +51,15 @@ export class Game
     this._groups.set("players", this._game.add.physicsGroup());
     this._groups.set("foes", this._game.add.physicsGroup());
 
+    let spellset : spell[] = new Array<spell>();
+    for (let i = 0; i < 8; i++) spellset.push(new spell_attack());
+
     // new player
-    this._player = new Player(this._game, 1200, 700, 'img/char_64_64_player.png', 32);
+    this._player = new Player(this._game, 1200, 700, 'img/char_64_64_player.png', 32, spellset);
     this._groups.get("players").add(this._player);
     set_sprite_character_group(this._groups.get("players"));
     this._game.camera.follow(this._player);
+    this._player_commands = new player_commands(this._player);
 
     // add some foes
     for (var i = 0; i < 3; i++){
@@ -70,8 +72,9 @@ export class Game
       (element: Phaser.Sprite) => {
         element.events.onInputDown.add(
           (sprite: Phaser.Sprite) => {
-            this._fight(this._player, sprite);
-            if(this._player.target == sprite) this._player.following_target = true;
+            if(this._player.target == sprite){
+              if(this._game.physics.arcade.distanceBetween(this._player, this._player.target) > this._player.scope/2) this._player.following_target = true;
+            }
             else{
               this._player.following_target = false;
               this._player.target = sprite;
@@ -84,7 +87,17 @@ export class Game
     );
 
 
-    this._cursors = this._game.input.keyboard.createCursorKeys();
+
+    this._life_printer = new life_printer(this._game, 15);
+    for(let group of this._groups.values()) {
+      group.forEach(
+        (element: Phaser.Sprite) => {
+          this._life_printer.add_sprite(element);
+        },
+        this
+      )
+    };
+    this._life_printer.start();
   }
 
   update() {
@@ -101,14 +114,7 @@ export class Game
       group.setAll('body.velocity.y', 0);
     }
 
-    this._clear_texts();
-    this._display_lifes();
-
-    // debug player scope
-    this._clear_graphics();
-    this._graphics.push(this._player.debug_scope());
-
-    this._read_input();
+    this._player_commands.movements();
 
     for(let group of this._groups.values()) {
       group.forEach(
@@ -128,80 +134,16 @@ export class Game
     // debugging
     this._game.debug.bodyInfo(this._player, 32, 320);
 
-    let color: string;
-    if(this._game.physics.arcade.distanceBetween(this._player, this._player.target) < this._player.scope) color = 'green';
-    else color = 'red';
-    this._game.debug.spriteBounds(this._player.target, color, false);
+    this._player.debug_scope();
+
+    this._player.debug_target();
   }
-
-  // next 2 methods could be generic but typescript doesn't accept '.destroy' on generic type...
-  private _clear_texts(){
-    for (let text of this._texts) {
-      text.destroy();
+  use_spell(i: number){
+    try{
+      this._player.apply_spell(i);
     }
-    this._texts = [];
-  }
-  private _clear_graphics(){
-    for (let graphic of this._graphics) {
-      graphic.destroy();
-    }
-    this._graphics = [];
-  }
-
-  private _display_lifes(){
-    for(let group of this._groups.values()) {
-      group.forEach(
-        (element: Phaser.Sprite) => {
-          if(element.alive){
-            let text = this._game.add.text(0, 0, element.health.toString(), { font: "3em;", fill: "#f99b10", align: "" });
-            text.alignTo(element, Phaser.TOP_CENTER, 0, -15);
-            this._texts.push(text);
-          }
-        },
-        this
-      );
-    }
-  }
-
-  private _fight(giver: Player, receiver: Phaser.Sprite){
-    if(this._game.physics.arcade.distanceBetween(giver, receiver) < giver.scope){
-      receiver.damage(15);
-    }
-  }
-
-  private _read_input(){
-    if (this._cursors.left.isDown)
-    {
-      this._player.body.velocity.x = -this._player.maxSpeed;
-    }
-    if (this._cursors.right.isDown)
-    {
-      this._player.body.velocity.x = this._player.maxSpeed;
-    }
-    if (this._cursors.up.isDown)
-    {
-      this._player.body.velocity.y = -this._player.maxSpeed;
-    }
-    if (this._cursors.down.isDown)
-    {
-      this._player.body.velocity.y = this._player.maxSpeed;
-    }
-
-    if(this._cursors.up.isUp && this._cursors.down.isUp && this._cursors.right.isUp && this._cursors.left.isUp){
-      if(this._player.following_target){
-        if(this._game.physics.arcade.distanceBetween(this._player, this._player.target) < this._player.scope/2) this._player.following_target = false;
-
-        if(this._player.position.x > this._player.target.position.x) this._player.body.velocity.x = -this._player.maxSpeed;
-        if(this._player.position.x < this._player.target.position.x) this._player.body.velocity.x = this._player.maxSpeed;
-        if(this._player.position.y > this._player.target.position.y) this._player.body.velocity.y = -this._player.maxSpeed;
-        if(this._player.position.y < this._player.target.position.y) this._player.body.velocity.y = this._player.maxSpeed;
-      }
-    }
-    else this._player.following_target = false;
-
-    if(Math.abs(this._player.body.velocity.x) + Math.abs(this._player.body.velocity.y)>this._player.maxSpeed){
-      this._player.body.velocity.x = this._player.body.velocity.x / Math.sqrt(2);
-      this._player.body.velocity.y = this._player.body.velocity.y / Math.sqrt(2)
+    catch (e){
+      alert(e.print());
     }
   }
 }

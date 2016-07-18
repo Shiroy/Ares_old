@@ -3,6 +3,13 @@ html
     head
         title Ares
     body
+        div#skill_bar
+          - for (var i = 0; i < 8; i++)
+            - var id_skill = 'skill_' + i
+            button(class='skill', id=id_skill)= id_skill
+        div#life_bar
+        div#target
+          
         script(type="text/javascript" src="phaser.js")
         script(type="text/javascript" src="socket.io.js")
         script(type="text/javascript" src="ares.js")

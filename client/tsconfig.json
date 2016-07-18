@@ -22,9 +22,12 @@
     "src/index.ts",
     "src/map.ts",
     "src/phaser_map.ts",
+    "src/player_commands.ts",
     "src/player.ts",
-    "src/spellspell_template.ts",
-    "src/sprite_functions.ts"
+    "src/printer.ts",
+    "src/spell.ts",
+    "src/sprite_functions.ts",
+    "src/ui.ts"
   ],
   "compileOnSave": false,
   "buildOnSave": false
