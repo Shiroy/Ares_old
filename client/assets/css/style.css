@@ -1,19 +1,35 @@
 .progress_bar {
   margin: 5px 0;
   position: relative;
+  height: 25px;
   width: 100%;
-  height: 30px;
 }
 .progress {
   position: absolute;
   width: 100%;
   height: 100%;
   text-align: center;
+  font-size: 15px;
   border-radius: 5px;
 }
 #life {
-  background-color: red;
+  background-color: #f44336;
 }
 #energy {
-  background-color: blue;
+  background-color: #008CBA;
+}
+button{
+  border: none;
+  border-radius: 5px;
+  color: white;
+  text-align: center;
+  display: inline-block;
+  font-size: 15px;
+
+}
+.spell_available{
+  background-color: #4CAF50;
+}
+.spell_blocked{
+  background-color: #e7e7e7; color: black;
 }

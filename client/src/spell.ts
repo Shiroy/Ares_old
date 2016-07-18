@@ -68,6 +68,9 @@ export abstract class spell{
   get lifeCost(){
     return this._lifeCost;
   }
+  get last_use(){
+    return this._last_use;
+  }
 }
 
 export class spell_attack extends spell{

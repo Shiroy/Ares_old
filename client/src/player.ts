@@ -31,9 +31,6 @@ export class Player extends Entity{
     super(game, x, y, key, frame, maxHealth);
     if(spells.length > 8) new ares_exception('Player', 'constructor', 'too many spells');
     this._spells = spells;
-    for (let i = 0; i < spells.length; i++){
-      document.getElementById('skill_' + i).textContent = spells[i].name;
-    }
 
     this._scope = scope;
     this._maxSpeed = maxSpeed;
@@ -88,6 +85,9 @@ export class Player extends Entity{
   }
   set using_spell(using_spell: boolean){
     this._using_spell = using_spell;
+  }
+  get spells(){
+    return this._spells;
   }
 
   apply_spell(i: number){

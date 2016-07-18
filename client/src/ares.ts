@@ -103,7 +103,7 @@ export class Game
     };
     this._life_printer.start();
 
-    this._ui_manager = new ui_manager(this._player);
+    this._ui_manager = new ui_manager(this, this._player);
   }
 
   update() {
