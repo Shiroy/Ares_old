@@ -1,4 +1,3 @@
-var _ = require('lodash');
 var fs = require('fs');
 var path = require('path');
 var jsesc = require('jsesc');
@@ -21,7 +20,7 @@ function readDir(dirPath) {
             var fileInfo = path.parse(file_assets_path);
 
             var file_entry = {
-                cache_key: path.relative('client/assets/', file_assets_path)
+                cache_key: path.relative('assets/', file_assets_path)
             };
 
             if(['.png', '.jpg'].indexOf(fileInfo.ext) !== -1) {
@@ -60,7 +59,7 @@ function readDir(dirPath) {
 }
 
 var loader = function(){
-    var assetList = readDir('client/assets');
+    var assetList = readDir('assets');
     var code = "module.exports = function(game) {\n"
 
     for (var asset of assetList) {

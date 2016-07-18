@@ -1,5 +1,5 @@
 module.exports = {
-  entry: './client/src/index.ts',
+  entry: './src/index.ts',
   output: {
     filename: 'ares.js'
   },
@@ -9,7 +9,7 @@ module.exports = {
   },
   externals: {
       'phaser': 'Phaser',
-      'socket.io': 'io'
+      'socket.io-client': 'io'
   },
   devtool: "source-map",
   module: {

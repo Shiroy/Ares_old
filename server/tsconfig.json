@@ -14,7 +14,7 @@
     "typings/main.d.ts"
   ],
   "files": [
-    "../typings/index.d.ts",
+    "typings/index.d.ts",
     "src/server.ts",
     "src/util/signal.ts"
   ],

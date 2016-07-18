@@ -6,7 +6,7 @@ import {Player} from './player';
 
 import {set_sprite_character_group} from './sprite_functions';
 
-let preload = require('val!../../preload_generator.js');
+let preload = require('val!../preload_generator.js');
 
 
 export class Game

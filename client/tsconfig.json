@@ -13,8 +13,8 @@
     "typings/main.d.ts"
   ],
   "files": [
-    "../node_modules/phaser/typescript/phaser.d.ts",
-    "../typings/index.d.ts",
+    "./node_modules/phaser/typescript/phaser.d.ts",
+    "./typings/index.d.ts",
     "src/ares.ts",
     "src/entity.ts",
     "src/entity_manager.ts",
