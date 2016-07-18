@@ -2,10 +2,9 @@ import Phaser = require('phaser');
 import {Game} from "./ares";
 
 export function init_buttons(ares: Game){
-  for (let i = 1; i < 8; i++){
+  for (let i = 0; i < 8; i++){
     let skill_i_signal : Phaser.Signal = new Phaser.Signal();
-    skill_i_signal.add(ares.attack.bind(ares));
-    //skill_i_signal.add(ares.attack.bind(ares, i));   IN ORDER TO SEND THE ID OF THE SKILL
+    skill_i_signal.add(ares.use_spell.bind(ares, i));
 
     function receive_skill_i_signal(){
       skill_i_signal.dispatch();
