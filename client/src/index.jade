@@ -4,7 +4,7 @@ html
         title Ares
     body
         div#skill_bar
-          - for (var i = 1; i < 8; i++)
+          - for (var i = 0; i < 8; i++)
             - var id_skill = 'skill_' + i
             button(class='skill', id=id_skill)= id_skill
         div#life_bar

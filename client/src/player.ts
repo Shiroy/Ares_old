@@ -1,6 +1,10 @@
 import {Entity} from './entity';
+import {spell} from './spell'
+import {ares_exception} from './exception';
 
 export class Player extends Entity{
+  private _spells: Array<spell>;
+
   private _scope: number;
   private _maxSpeed: number;
 
@@ -9,9 +13,11 @@ export class Player extends Entity{
 
   private _graphic_scope: Phaser.Graphics;
 
-  constructor(game: Phaser.Game, x: number, y: number, key: string | Phaser.RenderTexture | Phaser.BitmapData | PIXI.Texture, frame: string | number, scope: number = 230, maxHealth: number = 100, maxSpeed: number = 300){
+  constructor(game: Phaser.Game, x: number, y: number, key: string | Phaser.RenderTexture | Phaser.BitmapData | PIXI.Texture, frame: string | number, spells: Array<spell>, scope: number = 230, maxHealth: number = 100, maxSpeed: number = 300){
     // call to the Phaser.Sprite constructor
     super(game, x, y, key, frame, maxHealth);
+    if(spells.length > 8) new ares_exception('Player', 'constructor', 'too many spells');
+    this._spells = spells;
 
     this._scope = scope;
     this._maxSpeed = maxSpeed;
@@ -45,6 +51,11 @@ export class Player extends Entity{
   }
   set following_target(following_target: boolean){
     this._following_target = following_target;
+  }
+
+  apply_spell(i: number){
+    if(!this._spells[i]) throw new ares_exception('Player', 'apply_spell', 'the spell ' + i + ' doesn\'t exists');
+    this._spells[i].apply(this.game, this);
   }
 
   debug_scope(): Phaser.Graphics{

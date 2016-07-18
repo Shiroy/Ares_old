@@ -20,6 +20,6 @@ export class ares_exception {
   }
 
   print(): string{
-    return "'" + this._class + "' error, function '" + this._method + "': '" + this._error;
+    return "'" + this._class + "' error, function '" + this._method + "': " + this._error;
   }
 }

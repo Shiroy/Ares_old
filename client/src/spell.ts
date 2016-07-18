@@ -1,4 +1,8 @@
-class SpellTemplate{
+import Phaser = require('phaser');
+import {Player} from './player';
+
+
+export abstract class spell{
     private _castTime: number;
     private _coolDownTime: number;
     private _energyCost: number;
@@ -12,6 +16,7 @@ class SpellTemplate{
         this._energyCost = energyCost_;
         this._lifeCost = lifeCost_;
     }
+    abstract apply(game: Phaser.Game, player: Player);
     set castTime(castTime_: number){
         if (castTime_ < 0) throw "SpellTemplate: incorrect castTime";
         this._castTime = castTime_;
@@ -41,3 +46,24 @@ class SpellTemplate{
         return this._lifeCost;
     }
 }
+
+export class spell_attack extends spell{
+  constructor(){
+    super(800, 5*Phaser.Timer.SECOND, 5);
+  }
+  apply(game: Phaser.Game, player: Player){
+    if(game.physics.arcade.distanceBetween(player, player.target) < player.scope){
+      player.target.damage(15);
+    }
+  }
+}
+
+//
+// private _fight(giver: Player, receiver: Phaser.Sprite){
+//   if(this._game.physics.arcade.distanceBetween(giver, receiver) < giver.scope){
+//     receiver.damage(15);
+//   }
+// }
+// attack(){
+//   this._fight(this._player, this._player.target);
+// }

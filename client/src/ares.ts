@@ -5,6 +5,7 @@ import {Entity} from './entity';
 import {Player} from './player';
 import {life_printer} from './printer';
 import {player_commands} from './player_commands';
+import {spell, spell_attack} from './spell';
 
 import {set_sprite_character_group} from './sprite_functions';
 
@@ -50,8 +51,11 @@ export class Game
     this._groups.set("players", this._game.add.physicsGroup());
     this._groups.set("foes", this._game.add.physicsGroup());
 
+    let spellset : spell[] = new Array<spell>();
+    for (let i = 0; i < 8; i++) spellset.push(new spell_attack());
+
     // new player
-    this._player = new Player(this._game, 1200, 700, 'img/char_64_64_player.png', 32);
+    this._player = new Player(this._game, 1200, 700, 'img/char_64_64_player.png', 32, spellset);
     this._groups.get("players").add(this._player);
     set_sprite_character_group(this._groups.get("players"));
     this._game.camera.follow(this._player);
@@ -68,7 +72,6 @@ export class Game
       (element: Phaser.Sprite) => {
         element.events.onInputDown.add(
           (sprite: Phaser.Sprite) => {
-            this._fight(this._player, sprite);
             if(this._player.target == sprite){
               if(this._game.physics.arcade.distanceBetween(this._player, this._player.target) > this._player.scope/2) this._player.following_target = true;
             }
@@ -135,14 +138,12 @@ export class Game
 
     this._player.debug_target();
   }
-
-
-  private _fight(giver: Player, receiver: Phaser.Sprite){
-    if(this._game.physics.arcade.distanceBetween(giver, receiver) < giver.scope){
-      receiver.damage(15);
+  use_spell(i: number){
+    try{
+      this._player.apply_spell(i);
     }
-  }
-  attack(){
-    this._fight(this._player, this._player.target);
+    catch (e){
+      alert(e.print());
+    }
   }
 }
