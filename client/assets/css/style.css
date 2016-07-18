@@ -1,0 +1,19 @@
+.progress_bar {
+  margin: 5px 0;
+  position: relative;
+  width: 100%;
+  height: 30px;
+}
+.progress {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  border-radius: 5px;
+}
+#life {
+  background-color: red;
+}
+#energy {
+  background-color: blue;
+}

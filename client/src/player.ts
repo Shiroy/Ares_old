@@ -11,6 +11,8 @@ export class Player extends Entity{
   private _energy: number;
   private _maxEnergy: number;
 
+  private _using_spell: boolean;
+
   private _target: Phaser.Sprite;
   private _following_target: boolean;
 
@@ -29,6 +31,9 @@ export class Player extends Entity{
     super(game, x, y, key, frame, maxHealth);
     if(spells.length > 8) new ares_exception('Player', 'constructor', 'too many spells');
     this._spells = spells;
+    for (let i = 0; i < spells.length; i++){
+      document.getElementById('skill_' + i).textContent = spells[i].name;
+    }
 
     this._scope = scope;
     this._maxSpeed = maxSpeed;
@@ -77,6 +82,12 @@ export class Player extends Entity{
   }
   set following_target(following_target: boolean){
     this._following_target = following_target;
+  }
+  get using_spell(){
+    return this._using_spell;
+  }
+  set using_spell(using_spell: boolean){
+    this._using_spell = using_spell;
   }
 
   apply_spell(i: number){

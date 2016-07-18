@@ -3,15 +3,17 @@ import {Player} from './player';
 
 
 export abstract class spell{
+  private _name: string;
   private _castTime: number;
   private _coolDownTime: number;
   private _energyCost: number;
   private _lifeCost: number;
   protected _last_use: number;
-  constructor(castTime_: number = 0, coolDownTime_: number = 0, energyCost_: number = 0, lifeCost_: number = 0){
+  constructor(name: string = 'spell_name', castTime_: number = 0, coolDownTime_: number = 0, energyCost_: number = 0, lifeCost_: number = 0){
     if(castTime_ < 0 || coolDownTime_ < 0 || energyCost_ < 0 || lifeCost_ < 0){
       throw "SpellTemplate initialization error: incorrect parameters";
     }
+    this._name = name;
     this._castTime = castTime_;
     this._coolDownTime = coolDownTime_;
     this._energyCost = energyCost_;
@@ -21,16 +23,20 @@ export abstract class spell{
   }
   apply(player: Player){
     if(player.game.physics.arcade.distanceBetween(player, player.target) < player.scope){
-      if(player.energy >= this.energyCost && player.game.time.now - this._last_use > this._coolDownTime){
+      if(!player.using_spell && player.energy >= this.energyCost && player.game.time.now - this._last_use > this._coolDownTime){
         player.energy -= this.energyCost;
         let timer = player.game.time.create();
         timer.add(this.castTime, this._effects.bind(this, player));
+        player.using_spell = true;
         timer.start();
+        player.play('spell');
       }
     }
   }
   protected abstract _effects(player: Player);
-
+  set name(name: string){
+    this._name = name;
+  }
   set castTime(castTime_: number){
     if (castTime_ < 0) throw "SpellTemplate: incorrect castTime";
     this._castTime = castTime_;
@@ -46,6 +52,9 @@ export abstract class spell{
   set lifeCost(lifeCost_: number){
     if (lifeCost_ < 0) throw "SpellTemplate: incorrect lifeCost";
     this._lifeCost = lifeCost_;
+  }
+  get name(){
+    return this._name;
   }
   get castTime(){
     return this._castTime;
@@ -63,20 +72,12 @@ export abstract class spell{
 
 export class spell_attack extends spell{
   constructor(){
-    super(800, 5*Phaser.Timer.SECOND, 5);
+    super('attack', 800, 5*Phaser.Timer.SECOND, 5);
   }
   _effects(player: Player){
     player.target.damage(15);
     this._last_use = player.game.time.now;
+    player.animations.stop();
+    player.using_spell = false;
   }
 }
-
-//
-// private _fight(giver: Player, receiver: Phaser.Sprite){
-//   if(this._game.physics.arcade.distanceBetween(giver, receiver) < giver.scope){
-//     receiver.damage(15);
-//   }
-// }
-// attack(){
-//   this._fight(this._player, this._player.target);
-// }

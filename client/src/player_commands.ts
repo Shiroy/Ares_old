@@ -28,6 +28,11 @@ export class player_commands{
       this._player.body.velocity.y = this._player.maxSpeed;
     }
 
+    if(this._player.using_spell){
+      this._player.body.velocity.x = 0;
+      this._player.body.velocity.y = 0;
+    }
+
     if(this._cursors.up.isUp && this._cursors.down.isUp && this._cursors.right.isUp && this._cursors.left.isUp){
       if(this._player.following_target){
         if(this._player.game.physics.arcade.distanceBetween(this._player, this._player.target) < this._player.scope/2) this._player.following_target = false;

@@ -9,6 +9,8 @@ import {spell, spell_attack} from './spell';
 
 import {set_sprite_character_group} from './sprite_functions';
 
+import {ui_manager} from './ui';
+
 let preload = require('val!../preload_generator.js');
 
 
@@ -24,8 +26,10 @@ export class Game
 
   private _life_printer: life_printer;
 
+  private _ui_manager: ui_manager;
+
   constructor() {
-    this._game = new Phaser.Game(800, 600, Phaser.AUTO, 'Ares', {
+    this._game = new Phaser.Game(800, 400, Phaser.AUTO, 'Ares', {
       preload: Game.prototype.preload.bind(this),
       create: Game.prototype.create.bind(this),
       update: Game.prototype.update.bind(this),
@@ -98,6 +102,8 @@ export class Game
       )
     };
     this._life_printer.start();
+
+    this._ui_manager = new ui_manager(this._player);
   }
 
   update() {
@@ -123,7 +129,7 @@ export class Game
           else if (element.body.velocity.x > 0) element.play('right');
           else if (element.body.velocity.y < 0) element.play('up');
           else if (element.body.velocity.y > 0) element.play('down');
-          else if (element.alive) element.animations.stop();
+          else if (element.alive && element.animations.name != 'spell') element.animations.stop();
         },
         this
       );
@@ -132,18 +138,13 @@ export class Game
 
   render(){
     // debugging
-    this._game.debug.bodyInfo(this._player, 32, 320);
+    // this._game.debug.bodyInfo(this._player, 32, 320);
 
-    this._player.debug_scope();
+    // this._player.debug_scope();
 
     this._player.debug_target();
   }
   use_spell(i: number){
-    try{
       this._player.apply_spell(i);
-    }
-    catch (e){
-      alert(e.print());
-    }
   }
 }

@@ -2,7 +2,7 @@
 import {Game} from "./ares";
 import {init_buttons} from "./ui"
 
-import io = require("socket.io");
+import io = require("socket.io-client");
 
 
 io();
