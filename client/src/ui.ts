@@ -4,10 +4,12 @@ import {Player} from "./player";
 
 export class ui_manager{
   private _player: Player;
+  private _allies: Phaser.Group;
   private _timer: Phaser.Timer;
   private _frequency_in_ms: number;
-  constructor(ares: Game, player: Player, frequency_in_ms: number = 500){
+  constructor(ares: Game, player: Player, frequency_in_ms: number = 500, allies: Phaser.Group){
     this._player = player;
+    this._allies = allies;
     this._timer = player.game.time.create();
     this._timer.loop(frequency_in_ms, this.update_all, this);
     this._timer.start();
@@ -37,6 +39,19 @@ export class ui_manager{
     document.getElementById('energy').style.width = this._player.energy / this._player.maxEnergy * 100 + '%';
     document.getElementById('energy').textContent = this._player.energy + '/' + this._player.maxEnergy;
   }
+  update_allies(){
+    let allies_list: string;
+    allies_list = "<ul>";
+    this._allies.forEach(
+      (element: Phaser.Sprite) => {
+        allies_list += "<li>" + element.name + " (life " + element.health + "/" + element.maxHealth + ")</li>";
+      },
+      this
+    )
+    allies_list += "<ul>";
+
+    document.getElementById('allies_info').innerHTML = allies_list;
+  }
   update_spells(){
     for (let i = 0; i < 8; i++){
         if(this._player.game.time.now - this._player.spells[i].last_use < this._player.spells[i].coolDownTime){
@@ -50,9 +65,10 @@ export class ui_manager{
     }
   }
   update_target(){
-    document.getElementById('target').innerHTML = 'Target:' + this._player.target.name + ' (Life ' + this._player.target.health + '/' + this._player.target.maxHealth + ')';
+    document.getElementById('target_info').innerHTML = 'Target:' + this._player.target.name + ' (Life ' + this._player.target.health + '/' + this._player.target.maxHealth + ')';
   }
   update_all(){
+    this.update_allies();
     this.update_life();
     this.update_energy();
     this.update_spells();

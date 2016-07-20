@@ -53,32 +53,35 @@ export class Game
 
     this._map.setup();
 
-    // declare a group of players and a group of foes
-    this._groups.set("players", this._game.add.physicsGroup());
-    this._groups.set("foes", this._game.add.physicsGroup());
+    // declare a group of allies and a group of ennemies
+    this._groups.set("allies", this._game.add.physicsGroup());
+    this._groups.set("ennemies", this._game.add.physicsGroup());
 
     let spellset : spell[] = new Array<spell>();
     for (let i = 0; i < 7; i++) spellset.push(new spell_attack());
     spellset.push(new spell_explosion());
 
     // new player
-    this._player = new Player('Player', this._game, 1200, 700, 'img/char_64_64_player.png', 32, spellset);
-    this._groups.get("players").add(this._player);
+    this._player = new Player('Brutor', this._game, 1200, 700, 'img/char_64_64_player.png', 32, spellset);
+    this._groups.get("allies").add(this._player);
 
     this._player_commands = new player_commands(this._player);
 
-    // add some foes
+    // add an allie
+    this._groups.get("allies").add(new Entity('Alexia', this._game, 1200 + Math.random() * 200, 700 + Math.random() * 200, 'img/char_64_64_player_female.png', 32));
+
+    // add some ennemies
     for (var i = 0; i < 3; i++){
       let foe = new Entity('Foe'+i, this._game, 1200 + Math.random() * 200, 700 + Math.random() * 200, 'img/char_64_64_foe.png', 32)
-      this._groups.get("foes").add(foe);
+      this._groups.get("ennemies").add(foe);
       let foe2 = new Entity('Skeleton'+i, this._game, 1200 + Math.random() * 200, 700 + Math.random() * 200, 'img/char_64_64_skeleton.png', 32);
-      this._groups.get("foes").add(foe2);
+      this._groups.get("ennemies").add(foe2);
     }
 
-    set_sprite_character_group(this._groups.get("players"));
-    set_sprite_character_group(this._groups.get("foes"));
+    set_sprite_character_group(this._groups.get("allies"));
+    set_sprite_character_group(this._groups.get("ennemies"));
 
-    this._groups.get("foes").forEach(
+    this._groups.get("ennemies").forEach(
       (element: Phaser.Sprite) => {
         this._game.physics.arcade.quadTree.insert(element.body);
         element.events.onInputDown.add(
@@ -108,9 +111,9 @@ export class Game
     };
     this._life_printer.start();
 
-    this._ui_manager = new ui_manager(this, this._player);
+    this._ui_manager = new ui_manager(this, this._player, 500, this._groups.get('allies'));
 
-    this._minimap = new minimap(this._game, this._player, this._groups.get('foes'));
+    this._minimap = new minimap(this._game, this._player, this._groups.get('allies'), this._groups.get('ennemies'));
   }
 
   update() {

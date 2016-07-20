@@ -7,12 +7,14 @@ export class minimap{
   private _player: Player;
   private _graph_background: Phaser.Graphics;
   private _graph_points: Phaser.Graphics
+  private _allies: Phaser.Group;
   private _ennemies: Phaser.Group;
   private _factor: number;
 
-  constructor(game: Phaser.Game, player: Player, ennemies: Phaser.Group, factor: number = 6){
+  constructor(game: Phaser.Game, player: Player, allies: Phaser.Group, ennemies: Phaser.Group, factor: number = 6){
     this._game = game;
     this._player = player;
+    this._allies = allies;
     this._ennemies = ennemies;
     this._factor = factor;
 
@@ -39,6 +41,12 @@ export class minimap{
       },
       this
     );
-
+    this._graph_points.beginFill(0x00FF00, 0.6);
+    this._allies.forEach(
+      (element: Phaser.Sprite) => {
+        if (element != this._player) this._graph_points.drawCircle(element.position.x / 64 * this._factor, element.position.y / 64 * this._factor, 5);
+      },
+      this
+    );
   }
 }
