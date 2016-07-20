@@ -1,6 +1,7 @@
 import Phaser = require('phaser');
 
 import {AresMap} from "./phaser_map";
+import {minimap} from "./minimap";
 import {Entity} from './entity';
 import {Player} from './player';
 import {life_printer} from './printer';
@@ -19,6 +20,7 @@ export class Game
   private _game: Phaser.Game;
 
   private _map: AresMap;
+  private _minimap: minimap;
   private _player: Player;
   private _player_commands: player_commands;
 
@@ -29,7 +31,7 @@ export class Game
   private _ui_manager: ui_manager;
 
   constructor() {
-    this._game = new Phaser.Game(800, 400, Phaser.AUTO, 'ares', {
+    this._game = new Phaser.Game(window.innerWidth - 100, 500, Phaser.AUTO, 'ares', {
       preload: Game.prototype.preload.bind(this),
       create: Game.prototype.create.bind(this),
       update: Game.prototype.update.bind(this),
@@ -95,8 +97,6 @@ export class Game
       this
     );
 
-
-
     this._life_printer = new life_printer(this._game, 15);
     for(let group of this._groups.values()) {
       group.forEach(
@@ -109,10 +109,11 @@ export class Game
     this._life_printer.start();
 
     this._ui_manager = new ui_manager(this, this._player);
+
+    this._minimap = new minimap(this._game, this._player, this._groups.get('foes'));
   }
 
   update() {
-
     for(let group of this._groups.values()) {
       // make every sprites collide
       this._game.physics.arcade.collide(group, this._map.collide_layer());
@@ -139,6 +140,8 @@ export class Game
         this
       );
     }
+
+    this._minimap.update();
   }
 
   render(){
@@ -149,7 +152,9 @@ export class Game
 
     this._player.debug_target();
 
-    this._game.debug.quadTree(this._game.physics.arcade.quadTree, 'black');
+    // this._game.debug.quadTree(this._game.physics.arcade.quadTree, 'black');
+
+
   }
 
   use_spell(i: number){
