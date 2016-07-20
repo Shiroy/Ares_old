@@ -32,40 +32,43 @@ export class ui_manager{
     }
   }
   update_life(){
-    document.getElementById('life').style.width = this._player.health / this._player.maxHealth * 100 + '%';
-    document.getElementById('life').textContent = this._player.health + '/' + this._player.maxHealth;
+    document.getElementById('player_life').style.width = this._player.health / this._player.maxHealth * 100 + '%';
+    document.getElementById('player_life').textContent = this._player.health + '/' + this._player.maxHealth;
   }
   update_energy(){
-    document.getElementById('energy').style.width = this._player.energy / this._player.maxEnergy * 100 + '%';
-    document.getElementById('energy').textContent = this._player.energy + '/' + this._player.maxEnergy;
+    document.getElementById('player_energy').style.width = this._player.energy / this._player.maxEnergy * 100 + '%';
+    document.getElementById('player_energy').textContent = this._player.energy + '/' + this._player.maxEnergy;
   }
   update_allies(){
-    let allies_list: string;
-    allies_list = "<ul>";
+    let allies_list = "";
     this._allies.forEach(
       (element: Phaser.Sprite) => {
-        allies_list += "<li>" + element.name + " (life " + element.health + "/" + element.maxHealth + ")</li>";
+        allies_list += "<li class=\"list-group-item\">" + element.name + " ";
+        allies_list += '<div class="progress"><div class="progress-bar life" style="width:' + element.health/element.maxHealth*100 + '%">' + element.health + "/" + element.maxHealth + '</div></div>';
+        allies_list += "</li>";
       },
       this
     )
-    allies_list += "<ul>";
 
     document.getElementById('allies_info').innerHTML = allies_list;
   }
   update_spells(){
     for (let i = 0; i < 8; i++){
         if(this._player.game.time.now - this._player.spells[i].last_use < this._player.spells[i].coolDownTime){
-          document.getElementById('skill_' + i).classList.remove('spell_available');
-          document.getElementById('skill_' + i).classList.add('spell_blocked');
+          document.getElementById('skill_' + i).classList.remove('btn-primary');
+          document.getElementById('skill_' + i).classList.add('btn-default');
         }
         else{
-          document.getElementById('skill_' + i).classList.remove('spell_blocked');
-          document.getElementById('skill_' + i).classList.add('spell_available');
+          document.getElementById('skill_' + i).classList.remove('btn-default');
+          document.getElementById('skill_' + i).classList.add('btn-primary');
         }
     }
   }
   update_target(){
-    document.getElementById('target_info').innerHTML = 'Target:' + this._player.target.name + ' (Life ' + this._player.target.health + '/' + this._player.target.maxHealth + ')';
+    document.getElementById('target_name').innerHTML = this._player.target.name;
+
+     document.getElementById('target_life').style.width = this._player.target.health / this._player.target.maxHealth * 100 + '%';
+     document.getElementById('target_life').textContent = this._player.target.health + '/' + this._player.target.maxHealth;
   }
   update_all(){
     this.update_allies();

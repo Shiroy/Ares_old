@@ -31,7 +31,9 @@ export class Game
   private _ui_manager: ui_manager;
 
   constructor() {
-    this._game = new Phaser.Game(window.innerWidth - 100, 500, Phaser.AUTO, 'ares', {
+    let ares_container = document.getElementById('ares_container')
+    this._game = new Phaser.Game(ares_container.offsetWidth-100, (ares_container.offsetWidth-100)*9/16, Phaser.AUTO, 'ares', {
+    //this._game = new Phaser.Game(600, 400, Phaser.AUTO, 'ares', {
       preload: Game.prototype.preload.bind(this),
       create: Game.prototype.create.bind(this),
       update: Game.prototype.update.bind(this),

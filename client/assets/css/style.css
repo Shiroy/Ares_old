@@ -1,38 +1,84 @@
-.progress_bar {
-  margin: 5px 0;
-  position: relative;
-  height: 25px;
-  width: 100%;
+body{
+    background-color: #262626;
+    margin-top: 50px;
 }
-.progress {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  text-align: center;
-  font-size: 15px;
-  border-radius: 5px;
+#ares_container{
+    /*margin-left:25px;*/
+    /*width: 80%;*/
 }
-#life {
-  background-color: #f44336;
+#ares{
+    /*width:97%;*/
+    /*height: 500px;*/
 }
-#energy {
-  background-color: #008CBA;
+.life {
+    background-color: #f44336;
 }
-#skill_bar{
-  margin-top: 15px;
+.energy {
+    background-color: #008CBA;
 }
-button{
-  border: none;
-  border-radius: 5px;
-  color: white;
-  text-align: center;
-  display: inline-block;
-  font-size: 15px;
+.list-group-item{
+    padding: 4px 6px;
+}
+.list-group-item .progress{
+    margin-bottom: 0px;
+}
+#skills{
+    text-align: center;
+    margin: auto;
+    display: table;
+}
+.game_content{
+    background-color: #393939;
+    margin: 10px 0;
+    padding: 10px;
+    border-radius: 4px;
+    border: 1px solid #6a6a6a;
+    color: #ffffff;
+}
+.game_info{
+    background-color: #535353;
+    padding: 10px;
+    margin: 5px 0;
+    border: 1px solid #292929;
+}
+.list-group-item {
+    background-color: #4CAF50;
+}
 
+#ares-menu.navbar-default .navbar-brand {
+    color: #ffffff;
 }
-.spell_available{
-  background-color: #4CAF50;
+#ares-menu.navbar-default {
+    font-size: 14px;
+    background-color: #393939;
+    border-bottom: 1px solid #6a6a6a;
 }
-.spell_blocked{
-  background-color: #e7e7e7; color: black;
+#ares-menu.navbar-default .navbar-nav>li>a {
+    color: #ffffff;
+    background-color: #393939;
+}
+#ares-menu.navbar-default .navbar-nav>li>a:hover,
+#ares-menu.navbar-default .navbar-nav>li>a:focus {
+    color: rgba(255, 255, 255, 1);
+    background-color: rgba(248, 248, 248, 0);
+}
+#ares-menu.navbar-default .navbar-nav>.active>a,
+#ares-menu.navbar-default .navbar-nav>.active>a:hover,
+#ares-menu.navbar-default .navbar-nav>.active>a:focus {
+    color: rgba(85, 85, 85, 1);
+    background-color: rgba(231, 231, 231, 1);
+}
+#ares-menu.navbar-default .navbar-toggle {
+    border-color: #ddd;
+}
+#ares-menu.navbar-default .navbar-toggle:hover,
+#ares-menu.navbar-default .navbar-toggle:focus {
+    background-color: #ddd;
+}
+#ares-menu.navbar-default .navbar-toggle .icon-bar {
+    background-color: #888;
+}
+#ares-menu.navbar-default .navbar-toggle:hover .icon-bar,
+#ares-menu.navbar-default .navbar-toggle:focus .icon-bar {
+    background-color: #535353;
 }

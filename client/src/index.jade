@@ -1,35 +1,57 @@
+
 doctype html
 html
     head
         title Ares
-        link(href='css/style.css', rel='stylesheet')
         
         script(type="text/javascript" src="phaser.js")
         script(type="text/javascript" src="socket.io.js")
         
+        link(rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css")        
+        link(href='css/style.css', rel='stylesheet')
+        
     body
-        #life_bar.progress_bar
-          #life.progress
-          
-        #energy_bar.progress_bar
-          #energy.progress
-          
-        #target
-          h1 Target
-          #target_info
+        #ares-menu.navbar.navbar-default.navbar-fixed-top
+            .container-fluid
+                .navbar-header
+                    a.navbar-brand Ares
+                    
+        #body.container-fluid
         
-        #allies
-          h1 Allies
-          #allies_info
-        
-        #ares
-        
-        #skill_bar
-          - for (var i = 0; i < 8; i++)
-            - var id_skill = 'skill_' + i
-            button(class='spell_available', id=id_skill)= id_skill
+            #central_part.row.game_content
+                #ares_container.col-md-9
+                  #ares
             
-        
-          
+                #information.col-md-3.game_info
+                    h2 Player
+                    
+                    #player_life_bar.progress
+                        #player_life.progress-bar.life
+
+                    #player_energy_bar.progress
+                        #player_energy.progress-bar.energy
+
+                    #allies
+                        h2 Allies
+                        ul#allies_info.list-group
+
+                    #target
+                        h2 Target&nbsp;
+                            span.glyphicon.glyphicon-screenshot
+                        #target_info
+                            #target_name
+                            #target_life_bar.progress
+                                #target_life.progress-bar.life
+                            
+                
+                
+            #skills.game_content
+                #skill_bar.btn-group
+                  - for (var i = 0; i < 8; i++)
+                    - var id_skill = 'skill_' + i
+                    button(type="button" id=id_skill).btn.btn-primary= id_skill
         
         script(type="text/javascript" src="ares.js")
+        
+        script(src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js")
+        script(src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js")
