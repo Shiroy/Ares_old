@@ -26,7 +26,7 @@ export class ui_manager{
       skill_i.addEventListener('click', receive_skill_i_signal);
 
       let spell = this._player.spells[i];
-      skill_i.innerHTML  = '<strong>' + spell.name + '</strong><br>casttime: ' + spell.castTime + '<br>cooldown: ' + spell.coolDownTime + '<br>energy: ' + spell.energyCost+ '<br>life: ' + spell.lifeCost;
+      skill_i.innerHTML  = '<strong>' + spell.name + '</strong><br>casttime: ' + spell.castTime/Phaser.Timer.SECOND + '<br>cooldown: ' + spell.coolDownTime/Phaser.Timer.SECOND + '<br>energy: ' + spell.energyCost + '<br>life: ' + spell.lifeCost;
     }
   }
   update_life(){
@@ -49,9 +49,13 @@ export class ui_manager{
         }
     }
   }
+  update_target(){
+    document.getElementById('target').innerHTML = 'Target:' + this._player.target.name + ' (Life ' + this._player.target.health + '/' + this._player.target.maxHealth + ')';
+  }
   update_all(){
     this.update_life();
     this.update_energy();
     this.update_spells();
+    this.update_target();
   }
 }

@@ -18,6 +18,9 @@
 #energy {
   background-color: #008CBA;
 }
+#skill_bar{
+  margin-top: 15px;
+}
 button{
   border: none;
   border-radius: 5px;

@@ -3,17 +3,27 @@ html
     head
         title Ares
         link(href='css/style.css', rel='stylesheet')
+        
+        script(type="text/javascript" src="phaser.js")
+        script(type="text/javascript" src="socket.io.js")
+        
     body
+        #life_bar.progress_bar
+          #life.progress
+          
+        #energy_bar.progress_bar
+          #energy.progress
+          
+        #target
+        
+        #ares
+        
         #skill_bar
           - for (var i = 0; i < 8; i++)
             - var id_skill = 'skill_' + i
             button(class='spell_available', id=id_skill)= id_skill
-        #life_bar.progress_bar
-          #life.progress
-        #energy_bar.progress_bar
-          #energy.progress
-        //- #target.progress
+            
+        
           
-        script(type="text/javascript" src="phaser.js")
-        script(type="text/javascript" src="socket.io.js")
+        
         script(type="text/javascript" src="ares.js")

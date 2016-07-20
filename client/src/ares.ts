@@ -5,7 +5,7 @@ import {Entity} from './entity';
 import {Player} from './player';
 import {life_printer} from './printer';
 import {player_commands} from './player_commands';
-import {spell, spell_attack} from './spell';
+import {spell, spell_attack, spell_explosion} from './spell';
 
 import {set_sprite_character_group} from './sprite_functions';
 
@@ -29,7 +29,7 @@ export class Game
   private _ui_manager: ui_manager;
 
   constructor() {
-    this._game = new Phaser.Game(800, 400, Phaser.AUTO, 'Ares', {
+    this._game = new Phaser.Game(800, 400, Phaser.AUTO, 'ares', {
       preload: Game.prototype.preload.bind(this),
       create: Game.prototype.create.bind(this),
       update: Game.prototype.update.bind(this),
@@ -56,24 +56,29 @@ export class Game
     this._groups.set("foes", this._game.add.physicsGroup());
 
     let spellset : spell[] = new Array<spell>();
-    for (let i = 0; i < 8; i++) spellset.push(new spell_attack());
+    for (let i = 0; i < 7; i++) spellset.push(new spell_attack());
+    spellset.push(new spell_explosion());
 
     // new player
-    this._player = new Player(this._game, 1200, 700, 'img/char_64_64_player.png', 32, spellset);
+    this._player = new Player('Player', this._game, 1200, 700, 'img/char_64_64_player.png', 32, spellset);
     this._groups.get("players").add(this._player);
-    set_sprite_character_group(this._groups.get("players"));
-    this._game.camera.follow(this._player);
+
     this._player_commands = new player_commands(this._player);
 
     // add some foes
     for (var i = 0; i < 3; i++){
-      this._groups.get("foes").create(1200 + Math.random() * 200, 700 + Math.random() * 200, 'img/char_64_64_foe.png', 32);
-      this._groups.get("foes").create(1200 + Math.random() * 200, 700 + Math.random() * 200, 'img/char_64_64_skeleton.png', 32);
+      let foe = new Entity('Foe'+i, this._game, 1200 + Math.random() * 200, 700 + Math.random() * 200, 'img/char_64_64_foe.png', 32)
+      this._groups.get("foes").add(foe);
+      let foe2 = new Entity('Skeleton'+i, this._game, 1200 + Math.random() * 200, 700 + Math.random() * 200, 'img/char_64_64_skeleton.png', 32);
+      this._groups.get("foes").add(foe2);
     }
+
+    set_sprite_character_group(this._groups.get("players"));
     set_sprite_character_group(this._groups.get("foes"));
 
     this._groups.get("foes").forEach(
       (element: Phaser.Sprite) => {
+        this._game.physics.arcade.quadTree.insert(element.body);
         element.events.onInputDown.add(
           (sprite: Phaser.Sprite) => {
             if(this._player.target == sprite){
@@ -143,7 +148,10 @@ export class Game
     // this._player.debug_scope();
 
     this._player.debug_target();
+
+    this._game.debug.quadTree(this._game.physics.arcade.quadTree, 'black');
   }
+
   use_spell(i: number){
       this._player.apply_spell(i);
   }

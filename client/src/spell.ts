@@ -75,10 +75,33 @@ export abstract class spell{
 
 export class spell_attack extends spell{
   constructor(){
-    super('attack', 800, 5*Phaser.Timer.SECOND, 5);
+    super('Attack', 800, 5*Phaser.Timer.SECOND, 5);
   }
   _effects(player: Player){
     player.target.damage(15);
+    this._last_use = player.game.time.now;
+    player.animations.stop();
+    player.using_spell = false;
+  }
+}
+export class spell_explosion extends spell{
+  marker: Phaser.Rectangle;
+  constructor(){
+    super('Meteor', 2*Phaser.Timer.SECOND, 10*Phaser.Timer.SECOND, 15);
+  }
+  _effects(player: Player){
+    let radius = 500;
+    this.marker = new Phaser.Rectangle(player.target.position.x - radius/2, player.target.position.y - radius/2, radius, radius);
+
+    let founds = player.game.physics.arcade.quadTree.retrieve(this.marker); // doesn't work, returning every sprites
+
+    for (let found of founds)
+    {
+      if(player.game.physics.arcade.distanceBetween(player.target, found.sprite) < 100){
+        found.sprite.damage(20);
+      }
+    }
+
     this._last_use = player.game.time.now;
     player.animations.stop();
     player.using_spell = false;
