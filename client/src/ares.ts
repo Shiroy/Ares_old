@@ -6,7 +6,7 @@ import {Entity} from './entity';
 import {Player} from './player';
 import {life_printer} from './printer';
 import {player_commands} from './player_commands';
-import {spell, spell_attack, spell_explosion} from './spell';
+import {spell, spell_attack, spell_explosion, spell_nightmare, spell_heal} from './spell';
 
 import {set_sprite_character_group} from './sprite_functions';
 
@@ -31,7 +31,7 @@ export class Game
   private _ui_manager: ui_manager;
 
   constructor() {
-    let ares_container = document.getElementById('ares_container')
+    let ares_container = document.getElementById('ares_container');
     this._game = new Phaser.Game(ares_container.offsetWidth-100, (ares_container.offsetWidth-100)*9/16, Phaser.AUTO, 'ares', {
     //this._game = new Phaser.Game(600, 400, Phaser.AUTO, 'ares', {
       preload: Game.prototype.preload.bind(this),
@@ -60,8 +60,11 @@ export class Game
     this._groups.set("ennemies", this._game.add.physicsGroup());
 
     let spellset : spell[] = new Array<spell>();
-    for (let i = 0; i < 7; i++) spellset.push(new spell_attack());
+    for (let i = 0; i < 5; i++) spellset.push(new spell_attack());
     spellset.push(new spell_explosion());
+    spellset.push(new spell_heal());
+    spellset.push(new spell_nightmare());
+
 
     // new player
     this._player = new Player('Brutor', this._game, 1200, 700, 'img/char_64_64_player.png', 32, spellset);
@@ -83,24 +86,26 @@ export class Game
     set_sprite_character_group(this._groups.get("allies"));
     set_sprite_character_group(this._groups.get("ennemies"));
 
-    this._groups.get("ennemies").forEach(
-      (element: Phaser.Sprite) => {
-        this._game.physics.arcade.quadTree.insert(element.body);
-        element.events.onInputDown.add(
-          (sprite: Phaser.Sprite) => {
-            if(this._player.target == sprite){
-              if(this._game.physics.arcade.distanceBetween(this._player, this._player.target) > this._player.scope/2) this._player.following_target = true;
-            }
-            else{
-              this._player.following_target = false;
-              this._player.target = sprite;
-            }
+    for(let group of this._groups.values()) {
+        group.forEach(
+          (element: Phaser.Sprite) => {
+            this._game.physics.arcade.quadTree.insert(element.body);
+            element.events.onInputDown.add(
+              (sprite: Phaser.Sprite) => {
+                if(this._player.target == sprite){
+                  if(this._game.physics.arcade.distanceBetween(this._player, this._player.target) > this._player.scope/2) this._player.following_target = true;
+                }
+                else{
+                  this._player.following_target = false;
+                  this._player.target = sprite;
+                }
+              },
+              this
+            );
           },
           this
         );
-      },
-      this
-    );
+    }
 
     this._life_printer = new life_printer(this._game, 15);
     for(let group of this._groups.values()) {

@@ -31,9 +31,15 @@ export class minimap{
     this._graph_points.clear();
     this._game.world.bringToTop(this._graph_points);
 
+    // scope
+    this._graph_points.beginFill(0x00FFFF, 0.2);
+    this._graph_points.drawCircle(this._player.position.x / 64 * this._factor, this._player.position.y / 64 * this._factor, 2 * this._player.scope / 64 * this._factor);
+
+    // player position
     this._graph_points.beginFill(0x0000FF, 0.6);
     this._graph_points.drawCircle(this._player.position.x / 64 * this._factor, this._player.position.y / 64 * this._factor, 5);
 
+    // ennemies
     this._graph_points.beginFill(0xFF0000, 0.6);
     this._ennemies.forEach(
       (element: Phaser.Sprite) => {
@@ -41,6 +47,7 @@ export class minimap{
       },
       this
     );
+    // allies
     this._graph_points.beginFill(0x00FF00, 0.6);
     this._allies.forEach(
       (element: Phaser.Sprite) => {
