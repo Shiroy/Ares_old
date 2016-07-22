@@ -74,6 +74,7 @@ export class Game
 
     // add an allie
     this._groups.get("allies").add(new Entity('Alexia', this._game, 1200 + Math.random() * 200, 700 + Math.random() * 200, 'img/char_64_64_player_female.png', 32));
+    this._groups.get("allies").add(new Entity('Lucia', this._game, 1200 + Math.random() * 200, 700 + Math.random() * 200, 'img/char_64_64_player_female.png', 32));
 
     // add some ennemies
     for (var i = 0; i < 3; i++){
