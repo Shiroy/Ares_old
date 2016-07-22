@@ -104,6 +104,10 @@ export class Player extends Entity{
     return this._spells;
   }
 
+  set_target(entity: Entity){
+     this._target = entity;
+  }
+  
   private _regenerate_energy(){
     if(this._energy < this._maxEnergy) this._energy += this._energy_regeneration;
     if(this._energy > this._maxEnergy) this._energy = this._maxEnergy;
