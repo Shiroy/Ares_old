@@ -10,23 +10,32 @@ export class Player extends Entity{
 
   private _energy: number;
   private _maxEnergy: number;
+  private _energy_regeneration: number;
+  private _energy_timer: Phaser.Timer;
 
-  private _target: Phaser.Sprite;
+  private _using_spell: boolean;
+
+  private _target: Entity;
   private _following_target: boolean;
 
   private _graphic_scope: Phaser.Graphics;
 
-  constructor(game: Phaser.Game,
-    x: number, y: number, key: string | Phaser.RenderTexture | Phaser.BitmapData | PIXI.Texture,
+  constructor(
+    name: string = 'Player',
+    game: Phaser.Game,
+    x: number, y: number,
+    key: string | Phaser.RenderTexture | Phaser.BitmapData | PIXI.Texture,
     frame: string | number,
     spells: Array<spell>,
     scope: number = 230,
     maxHealth: number = 500,
     maxSpeed: number = 300,
-    maxEnergy: number = 60){
+    maxEnergy: number = 60,
+    energy_regeneration: number = 2
+    ){
 
     // call to the Phaser.Sprite constructor
-    super(game, x, y, key, frame, maxHealth);
+    super(name, game, x, y, key, frame, maxHealth);
     if(spells.length > 8) new ares_exception('Player', 'constructor', 'too many spells');
     this._spells = spells;
 
@@ -35,11 +44,18 @@ export class Player extends Entity{
 
     this._maxEnergy = maxEnergy;
     this._energy = maxEnergy;
+    this._energy_regeneration = energy_regeneration;
+
+    this._energy_timer = this.game.time.create();
+    this._energy_timer.loop(Phaser.Timer.SECOND, this._regenerate_energy, this);
+    this._energy_timer.start();
 
     this._target = this;
     this._following_target = false;
 
     this._graphic_scope = this.game.add.graphics(0, 0);
+
+    this.game.camera.follow(this);
   }
 
   get scope(){
@@ -69,7 +85,7 @@ export class Player extends Entity{
   get target(){
     return this._target;
   }
-  set target(sprite: Phaser.Sprite){
+  set target(sprite: Entity){
     this._target = sprite;
   }
   get following_target(){
@@ -77,6 +93,20 @@ export class Player extends Entity{
   }
   set following_target(following_target: boolean){
     this._following_target = following_target;
+  }
+  get using_spell(){
+    return this._using_spell;
+  }
+  set using_spell(using_spell: boolean){
+    this._using_spell = using_spell;
+  }
+  get spells(){
+    return this._spells;
+  }
+
+  private _regenerate_energy(){
+    if(this._energy < this._maxEnergy) this._energy += this._energy_regeneration;
+    if(this._energy > this._maxEnergy) this._energy = this._maxEnergy;
   }
 
   apply_spell(i: number){

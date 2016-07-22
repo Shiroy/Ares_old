@@ -6,36 +6,21 @@ export class MapClass{
     private _layers: Map<string, phaser.TilemapLayer>; // [name, layer]
     private _collide_layer_name: string;
 
-    private _height: number;
-    private _width: number;
-
     constructor(h: number = 1, w: number = 1){
         if(h <= 0 || w <= 0) throw "map initialization error: incorrect size";
-        this._height = h;
-        this._width = w;
 
         this._layers = new Map<string, phaser.TilemapLayer>();
     }
-    set height(h: number) {
-        if(h < 0) throw "map error: negative height";
-        this._height = h;
-    }
-    set width(w: number) {
-        if(w < 0) throw "map error: negative width";
-        this._width = w;
-    }
     get height(){
-        return this.height;
+        return this._tilemap.height;
     }
     get width(){
-        return this.width;
+        return this._tilemap.width;
     }
 
     set tilemap(tilemap:phaser.Tilemap){
       if(!tilemap) throw "map: error with the tilemap";
       this._tilemap = tilemap;
-      this._height = this._tilemap.height;
-      this._width = this._tilemap.width;
     }
 
     addTilesetImage(tileset_name: string, tileset_file: string){

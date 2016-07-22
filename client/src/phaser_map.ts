@@ -23,6 +23,6 @@ export class AresMap extends MapClass{
 
     this.activate_collide_layer();
 
-    this.activate_collide_layer_debug();
+    // this.activate_collide_layer_debug();
   }
 }

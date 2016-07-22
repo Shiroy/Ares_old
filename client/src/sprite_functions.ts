@@ -7,7 +7,9 @@ function set_sprite_character_animations(sprite: Phaser.Sprite){
   sprite.animations.add('down', [130,131,132,133,134,135,136,137,138], 20, true);
   sprite.animations.add('down', [130,131,132,133,134,135,136,137,138], 20, true);
 
-  sprite.animations.add('death', [260, 261, 262, 263, 264, 265], 5, false);
+  sprite.animations.add('death', [260, 261, 262, 263, 264, 265], 20, false);
+
+  sprite.animations.add('spell', [26, 27, 28, 29, 30, 31, 32], 10, true);
 
   sprite.events.onKilled.add(
     (this_sprite: Phaser.Sprite) => {

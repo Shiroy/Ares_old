@@ -21,6 +21,7 @@
     "src/exception.ts",
     "src/index.ts",
     "src/map.ts",
+    "src/minimap.ts",
     "src/phaser_map.ts",
     "src/player_commands.ts",
     "src/player.ts",
