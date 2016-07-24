@@ -3,7 +3,8 @@ import serve_static = require('serve-static');
 import http = require('http');
 import morgan = require('morgan');
 import socket_io = require("socket.io");
-import {Observer} from './util/signal';
+
+import {Player} from './entities/player';
 
 let app = express();
 let server = http.createServer(app);
@@ -13,9 +14,9 @@ io.attach(server);
 
 app.use(morgan('dev'));
 
-io.on('connection', () => {
+io.on('connection', (socket: SocketIO.Socket) => {
     console.log("Nouvelle connexion");
-    Observer.emit("new-connection");
+    let player = new Player(socket);
 })
 
 app.use(serve_static(__dirname + '/public', {
