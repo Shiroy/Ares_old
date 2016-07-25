@@ -46,7 +46,7 @@ gulp.task('runtime_dep', shell.task(['npm i', 'npm link ares-protocol'], {
 gulp.task('default', ['client', 'server', 'protocol']);
 
 gulp.task('full_build', function(cb){
-    runSequence('build_dep', 'runtime_dep', cb);
+    runSequence(['build_dep', 'protocol'], 'runtime_dep', cb);
 })
 
 gulp.task('watch', ['client_watch', 'server_watch']);
