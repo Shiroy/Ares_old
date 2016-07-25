@@ -2,6 +2,8 @@
   "name": "ares-client",
   "dependencies": {},
   "globalDependencies": {
+    "bootstrap": "registry:dt/bootstrap#3.3.5+20160619023404",
+    "jquery": "registry:dt/jquery#1.10.0+20160704162008",
     "node": "registry:dt/node#6.0.0+20160709114037",
     "socket.io-client": "registry:dt/socket.io-client#1.4.4+20160317120654"
   }
