@@ -41,8 +41,11 @@ body{
     margin: 5px 0;
     border: 1px solid #292929;
 }
-.list-group-item {
+#allies_info .btn-primary{
     background-color: #4CAF50;
+}
+#allies_info .btn-group, .btn-group-vertical{
+    display: block;
 }
 
 #ares-menu.navbar-default .navbar-brand {
