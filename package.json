@@ -26,5 +26,6 @@
     "gulp-shell": "^0.5.2",
     "rimraf": "^2.5.3",
     "run-sequence": "^1.2.2"
-  }
+  },
+  "dependencies": {}
 }

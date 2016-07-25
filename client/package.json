@@ -18,6 +18,8 @@
   },
   "homepage": "https://github.com/Shiroy/Ares#readme",
   "dependencies": {
+    "bootstrap": "^3.3.6",
+    "jquery": "^3.1.0",
     "phaser": "github:shiroy/phaser",
     "socket.io-client": "^1.4.8"
   },

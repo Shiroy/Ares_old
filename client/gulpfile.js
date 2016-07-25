@@ -24,11 +24,22 @@ gulp.task('socket-io-client', function(){
 })
 
 gulp.task('phaser', function() {
-    gulp.src("node_modules/phaser/build/phaser.js")
+    return gulp.src("node_modules/phaser/build/phaser.js")
     .pipe(gulp.dest("../dist/public"));
 })
 
-gulp.task('client', ['client_asset', 'client_html', 'phaser', 'socket-io-client', 'client_typescript'])
+gulp.task('bootstrap', function() {
+    return gulp.src("node_modules/bootstrap/dist/**/*")
+    .pipe(gulp.dest("../dist/public"));
+})
+
+gulp.task('jquery', function() {
+    return gulp.src("node_modules/jquery/dist/**/*")
+    .pipe(gulp.dest("../dist/public/js/"));
+})
+
+
+gulp.task('client', ['client_asset', 'client_html', 'phaser', 'socket-io-client', 'client_typescript', 'bootstrap', 'jquery'])
 
 gulp.task('client_typescript', function() {
 
@@ -41,7 +52,7 @@ gulp.task('client_typescript', function() {
 
 gulp.task("watch", ['client'], function() {
     livereload.listen()
-    gulp.watch("client/src/**/*.ts", ['client_typescript']);
+    gulp.watch("client/src/**/*", ['client_typescript']);
 });
 
 gulp.task('default', ['client']);
