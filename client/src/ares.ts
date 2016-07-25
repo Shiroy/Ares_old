@@ -31,8 +31,7 @@ export class Game
   private _ui_manager: ui_manager;
 
   constructor() {
-    let ares_container = document.getElementById('ares_container');
-    this._game = new Phaser.Game(ares_container.offsetWidth-100, (ares_container.offsetWidth-100)*9/16, Phaser.AUTO, 'ares', {
+    this._game = new Phaser.Game($("#ares_container").width(), $("#ares_container").width()*9/16, Phaser.AUTO, 'ares', {
     //this._game = new Phaser.Game(600, 400, Phaser.AUTO, 'ares', {
       preload: Game.prototype.preload.bind(this),
       create: Game.prototype.create.bind(this),
@@ -164,8 +163,6 @@ export class Game
     this._player.debug_target();
 
     // this._game.debug.quadTree(this._game.physics.arcade.quadTree, 'black');
-
-
   }
 
   use_spell(i: number){

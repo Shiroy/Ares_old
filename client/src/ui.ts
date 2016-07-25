@@ -17,42 +17,41 @@ export class ui_manager{
     }
     init_buttons(ares: Game){
         for (let i = 0; i < 8; i++){
-            let skill_i = document.getElementById('skill_' + i);
-            skill_i.addEventListener('click', ares.use_spell.bind(ares, i));
+            let skill_i = $('#skill_' + i);
+            skill_i.click(ares.use_spell.bind(ares, i));
 
             let spell = this._player.spells[i];
-            skill_i.innerHTML  = '<strong>' + spell.name + '</strong><br>casttime: ' + spell.castTime/Phaser.Timer.SECOND + '<br>cooldown: ' + spell.coolDownTime/Phaser.Timer.SECOND + '<br>energy: ' + spell.energyCost + '<br>life: ' + spell.lifeCost;
+            skill_i.html('<strong>' + spell.name + '</strong><br>casttime: ' + spell.castTime/Phaser.Timer.SECOND + '<br>cooldown: ' + spell.coolDownTime/Phaser.Timer.SECOND + '<br>energy: ' + spell.energyCost + '<br>life: ' + spell.lifeCost);
         }
     }
-    // private _create_life_bar(max: number, current: number, type: string){
-    //     return '<div class="progress"><div class="progress-bar life" style="width:' + current/max*100 + '%">' + current + "/" + max + '</div></div>';
-    // }
+    private _create_life_bar(max: number, current: number, type: string = ''){
+        return '<div class="progress"><div class="progress-bar life" style="width:' + current/max*100 + '%">' + current + "/" + max + '</div></div>';
+    }
     update_life(){
-        document.getElementById('player_life').style.width = this._player.health / this._player.maxHealth * 100 + '%';
-        document.getElementById('player_life').textContent = this._player.health + '/' + this._player.maxHealth;
+        $('#player_life').width(this._player.health / this._player.maxHealth * 100 + '%');
+        $('#player_life').text(this._player.health + '/' + this._player.maxHealth);
     }
     update_energy(){
-        document.getElementById('player_energy').style.width = this._player.energy / this._player.maxEnergy * 100 + '%';
-        document.getElementById('player_energy').textContent = this._player.energy + '/' + this._player.maxEnergy;
+        $('#player_energy').width(this._player.energy / this._player.maxEnergy * 100 + '%');
+        $('#player_energy').text(this._player.energy + '/' + this._player.maxEnergy);
     }
 
     update_allies(){
-        document.getElementById('allies_info').innerHTML = '';
+        $('#allies_info').empty();
+        let allies_list = "";
         this._allies.forEach(
             (element: Phaser.Sprite) => {
-                let allies_list = "";
                 allies_list += "<button class=\"btn btn-primary\" id=\"ally_" + element.name +"\">" + element.name;
-                allies_list += '<div class="progress"><div class="progress-bar life" style="width:' + element.health/element.maxHealth*100 + '%">' + element.health + "/" + element.maxHealth + '</div></div>';
+                allies_list += this._create_life_bar(element.maxHealth, element.health);
                 allies_list += "</button>";
-
-                document.getElementById('allies_info').innerHTML += allies_list;
             },
             this
         );
+        $('#allies_info').html(allies_list);
 
         this._allies.forEach(
             (element: Phaser.Sprite) => {
-                document.getElementById("ally_" + element.name).addEventListener('click', this._player.set_target.bind(this._player, element));
+                $("#ally_" + element.name).click(this._player.set_target.bind(this._player, element));
             },
             this
         );
@@ -70,10 +69,10 @@ export class ui_manager{
         }
     }
     update_target(){
-        document.getElementById('target_name').innerHTML = this._player.target.name;
+        $('#target_name').text(this._player.target.name);
 
-        document.getElementById('target_life').style.width = this._player.target.health / this._player.target.maxHealth * 100 + '%';
-        document.getElementById('target_life').textContent = this._player.target.health + '/' + this._player.target.maxHealth;
+        $('#target_life').width(this._player.target.health / this._player.target.maxHealth * 100 + '%');
+        $('#target_life').text(this._player.target.health + '/' + this._player.target.maxHealth);
     }
     update_all(){
         this.update_allies();
