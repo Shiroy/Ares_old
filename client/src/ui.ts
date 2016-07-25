@@ -41,9 +41,9 @@ export class ui_manager{
         this._allies.forEach(
             (element: Phaser.Sprite) => {
                 let allies_list = "";
-                allies_list += "<li class=\"list-group-item\" id=\"selected_allie_" + element.name +"\">" + element.name;
+                allies_list += "<button class=\"btn btn-primary\" id=\"ally_" + element.name +"\">" + element.name;
                 allies_list += '<div class="progress"><div class="progress-bar life" style="width:' + element.health/element.maxHealth*100 + '%">' + element.health + "/" + element.maxHealth + '</div></div>';
-                allies_list += "</li>";
+                allies_list += "</button>";
 
                 document.getElementById('allies_info').innerHTML += allies_list;
             },
@@ -52,7 +52,7 @@ export class ui_manager{
 
         this._allies.forEach(
             (element: Phaser.Sprite) => {
-                document.getElementById("selected_allie_" + element.name).addEventListener('click', this._player.set_target.bind(this._player, element));
+                document.getElementById("ally_" + element.name).addEventListener('click', this._player.set_target.bind(this._player, element));
             },
             this
         );
