@@ -6,7 +6,7 @@ var file = require('gulp-file');
 gulp.task('server', ['package_json_run'], function() {
     var tsProject = ts.createProject("tsconfig.json");
 
-    var tsResult = gulp.src(["src/**/*.ts", "typings/index.d.ts"])
+    var tsResult = tsProject.src()
     .pipe(plumber())
     .pipe(ts(tsProject));
 
