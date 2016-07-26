@@ -24,7 +24,11 @@ gulp.task('dep_server', shell.task(['npm i'], {
     cwd: './server'
 }));
 
-gulp.task('build_dep', ['dep_client', 'dep_server']);
+gulp.task('dep_protocol', shell.task(['npm i'], {
+    cwd: './protocol'
+}));
+
+gulp.task('build_dep', ['dep_client', 'dep_server', 'dep_protocol']);
 
 gulp.task('clean', function() {
     try {
@@ -46,7 +50,7 @@ gulp.task('runtime_dep', shell.task(['npm i', 'npm link ares-protocol'], {
 gulp.task('default', ['client', 'server', 'protocol']);
 
 gulp.task('full_build', function(cb){
-    runSequence(['build_dep', 'protocol'], 'runtime_dep', cb);
+    runSequence('build_dep', 'runtime_dep', cb);
 })
 
 gulp.task('watch', ['client_watch', 'server_watch']);

@@ -2,13 +2,15 @@ import express = require('express');
 import serve_static = require('serve-static');
 import http = require('http');
 import morgan = require('morgan');
-import socket_io = require("socket.io");
+import {io} from './socket';
 
-import {Player} from './entities/player';
+import {EntityManager} from './entities/entity_manager';
+import {Entity} from './entities/entity';
+import AresProtocol = require('ares-protocol');
 
 let app = express();
 let server = http.createServer(app);
-let io = socket_io();
+
 
 io.attach(server);
 
@@ -16,7 +18,8 @@ app.use(morgan('dev'));
 
 io.on('connection', (socket: SocketIO.Socket) => {
     console.log("Nouvelle connexion");
-    let player = new Player(socket);
+    let player = EntityManager._instance.addEntity("Player", AresProtocol.ModifyMessage.ObjectType.PLAYER, socket);
+    player.addMe();
 })
 
 app.use(serve_static(__dirname + '/public', {
